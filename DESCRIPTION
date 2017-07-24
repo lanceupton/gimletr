@@ -15,3 +15,6 @@ Imports:
     dplyr,
     rvest,
     httr
+
+URL: http://github.com/lanceupton/gimletr
+BugReports: http://github.com/lanceupton/gimletr/issues
