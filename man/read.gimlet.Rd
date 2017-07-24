@@ -13,7 +13,7 @@ read.gimlet(site, email, password, start_date, end_date)
 
 \item{password}{The password for logging in to the Gimlet site.}
 
-\item{start_date, end_date}{Objects of class "POSIXt" or "Date".}
+\item{start_date, end_date}{Optional. Objects of class "POSIXt" or "Date".}
 }
 \value{
 A data frame (\code{\link[base]{data.frame}}) containing the data returned by Gimlet in the download query.
@@ -22,6 +22,6 @@ A data frame (\code{\link[base]{data.frame}}) containing the data returned by Gi
 Download data from a Gimlet site.
 }
 \examples{
-read.gimlet("mylibrary", "email@gmail.com", "mypassword")
-read.gimlet("mylibrary", "email@gmail.com", "mypassword", "2015-01-01", "2015-01-31")
+read.gimlet("mysite", "e@mail.com", "mypassword")
+read.gimlet("mysite", "e@mail.com", "mypassword", "2015-01-01", "2015-01-31")
 }
