@@ -11,6 +11,8 @@
 #' @examples
 #' read.gimlet("mysite", "e@mail.com", "mypassword")
 #' read.gimlet("mysite", "e@mail.com", "mypassword", "2015-01-01", "2015-01-31")
+#'
+#' @export read.gimlet
 
 read.gimlet <- function(site, email, password, start_date, end_date) {
 

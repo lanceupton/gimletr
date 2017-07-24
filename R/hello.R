@@ -7,6 +7,9 @@
 #' @examples
 #' hello("Tyler")
 #' hello("Big T")
+#' #'
+#' @export hello
+
 hello <- function(name) {
   msg <- c(
     paste0("Welcome to gimletr, ", name, "!"),

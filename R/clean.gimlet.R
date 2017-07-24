@@ -11,6 +11,7 @@
 #' @examples
 #' clean.gimlet(read.gimlet("site", "e@mail.com", "pass"))
 #'
+#' @export clean.gimlet
 
 clean.gimlet <- function(data, tags, id) {
 
