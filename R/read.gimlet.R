@@ -1,23 +1,35 @@
 #' Download Gimlet data.
 #'
-#' Download data from a Gimlet site.
+#' Download Gimlet data.
 #'
 #' @param site The name of the Gimlet subdomain ("site") to access.
-#' @param email The email address for logging in to the Gimlet site.
-#' @param password The password for logging in to the Gimlet site.
+#' @param email The login email address for the Gimlet site.
+#' @param password The login password for the Gimlet site.
 #' @param start_date,end_date Optional. Objects of class "POSIXt" or "Date".
+#' @param arg_list Optional. A list containing all arguments for this function.
 #'
 #' @return A data frame (\code{\link[base]{data.frame}}) containing the data returned by Gimlet in the download query.
 #' @examples
 #' read.gimlet("mysite", "e@mail.com", "mypassword")
-#' read.gimlet("mysite", "e@mail.com", "mypassword", "2015-01-01", "2015-01-31")
+#'
+#' arg_list <- list(
+#'   site = "mysite",
+#'   email = "e@mail.com",
+#'   password = "mypassword"
+#' )
+#' read.gimlet(arg_list = arg_list)
 #'
 #' @export read.gimlet
 
-read.gimlet <- function(site, email, password, start_date, end_date) {
+read.gimlet <- function(site, email, password, start_date, end_date, arg_list) {
 
 # Handle Arguments --------------------------------------------------------
 
+  # Handle argument list
+  if(!missing(arg_list)) {
+    # Send objects in list to the global environment
+    list2env(x = arg_list, envir = globalenv())
+  }
   # Throw error if required arguments missing
   if(missing(site)) {
     stop("Please specify a Gimlet site.")
@@ -35,20 +47,24 @@ read.gimlet <- function(site, email, password, start_date, end_date) {
   # Handle report dates
   # If both are missing
   if(missing(start_date) + missing(end_date) == 2) {
-    # Set report to last 30 days
-    start_date <- Sys.Date() - 30
+    # Set report to last 7 days
+    start_date <- Sys.Date() - 7
     end_date <- Sys.Date()
     # Message user about default values
     message(
-      "No start_date or end_date given.\n",
-      "Using ", start_date, " and ", end_date
+      "No start_date or end_date given. Defaulting to last 7 days.\n",
+      "Using ", start_date, " and ", end_date, "."
     )
   }
   # If both are defined
   if(missing(start_date) + missing(end_date) == 0) {
     # Format them as Gimlet parameters
-    start_date <- format(as.Date(start_date), format = "%Y-%m-%d")
-    end_date <- format(as.Date(end_date), format = "%Y-%m-%d")
+    start_date <- format(as.Date(start_date))
+    end_date <- format(as.Date(end_date))
+    # If unordered
+    if(start_date > end_date) {
+      stop("start_date must be before end_date")
+    }
   }
 
   # Check argument classes
