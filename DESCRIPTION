@@ -6,7 +6,9 @@ Author: Upton, Lance T.
 Maintainer: Upton, Lance T. <lance.upton@gmail.com>
 Description: Summary of functions:
     \code{read.gimlet()} - Downloads Gimlet data from start_date to end_date.
-    \code{clean.gimlet()} - Preprocesses Gimlet data.
+    \code{clean.gimlet()} - Pre-processes Gimlet data.
+    \code{process.tags()} - Processes and verifies Gimlet Tags.
+    \code{process.ids()} - Processes and verifies Gimlet Initials.
 License: MIT
 Encoding: UTF-8
 LazyData: true
