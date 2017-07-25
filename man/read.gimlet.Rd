@@ -4,24 +4,33 @@
 \alias{read.gimlet}
 \title{Download Gimlet data.}
 \usage{
-read.gimlet(site, email, password, start_date, end_date)
+read.gimlet(site, email, password, start_date, end_date, arg_list)
 }
 \arguments{
 \item{site}{The name of the Gimlet subdomain ("site") to access.}
 
-\item{email}{The email address for logging in to the Gimlet site.}
+\item{email}{The login email address for the Gimlet site.}
 
-\item{password}{The password for logging in to the Gimlet site.}
+\item{password}{The login password for the Gimlet site.}
 
 \item{start_date, end_date}{Optional. Objects of class "POSIXt" or "Date".}
+
+\item{arg_list}{Optional. A list containing all arguments for this function.}
 }
 \value{
 A data frame (\code{\link[base]{data.frame}}) containing the data returned by Gimlet in the download query.
 }
 \description{
-Download data from a Gimlet site.
+Download Gimlet data.
 }
 \examples{
 read.gimlet("mysite", "e@mail.com", "mypassword")
-read.gimlet("mysite", "e@mail.com", "mypassword", "2015-01-01", "2015-01-31")
+
+arg_list <- list(
+  site = "mysite",
+  email = "e@mail.com",
+  password = "mypassword"
+)
+read.gimlet(arg_list = arg_list)
+
 }
