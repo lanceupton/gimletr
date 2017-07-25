@@ -7,7 +7,7 @@
 #' @examples
 #' hello("Tyler")
 #' hello("Big T")
-#' #'
+#'
 #' @export hello
 
 hello <- function(name) {

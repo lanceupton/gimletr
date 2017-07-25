@@ -18,4 +18,5 @@ Print a welcome message.
 \examples{
 hello("Tyler")
 hello("Big T")
+
 }
