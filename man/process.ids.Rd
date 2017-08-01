@@ -12,7 +12,7 @@ process.ids(data, id)
 \item{id}{A character vector of users.}
 }
 \value{
-A data frame (\code{\link[base]{data.frame}}) containing processed and verified IDs.
+A message containing information about ID documentation.
 }
 \description{
 Verify Initials in Gimlet data.
