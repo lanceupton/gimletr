@@ -44,10 +44,12 @@ process.tags <- function(data, tags) {
     # Index tag in first position of tagpre
     i <- grep(x = data$TagPre, pattern = paste0("^", n))
     # Assign tag
-    data[i,"TagPost"] <- n
+    if(length(i) > 0) {
+      data[i,"TagPost"] <- n
+    }
   }
 
   # Return processed data, sorted by TagPost
-  data[,order(data$TagPost)]
+  data[order(data$TagPost),]
 
 }
