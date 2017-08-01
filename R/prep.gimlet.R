@@ -53,6 +53,7 @@ prep.gimlet <- function(data) {
 
   # Format data
   for(n in 1:length(data)) {
+    # "Attach" variable
     x <- data[,n]
     # Remove trailing/leading/duplicate whitespace
     x <- gsub(pattern = "^ +", replacement = "", x = x)
@@ -62,6 +63,7 @@ prep.gimlet <- function(data) {
     # Label blank observations
     i <- union(which(x == ""), which(is.na(x)))
     if(length(i) > 0) {x[i] <- "BLANK"}
+    # Reassign to original variable
     data[,n] <- x
   }
 
