@@ -6,30 +6,17 @@
 #' @param email The login email address for the Gimlet site.
 #' @param password The login password for the Gimlet site.
 #' @param start_date,end_date Optional. Objects of class "POSIXt" or "Date".
-#' @param arg_list Optional. A list containing all arguments for this function.
 #'
 #' @return A data frame (\code{\link[base]{data.frame}}) containing the data returned by Gimlet in the download query.
 #' @examples
 #' read.gimlet("mysite", "e@mail.com", "mypassword")
 #'
-#' arg_list <- list(
-#'   site = "mysite",
-#'   email = "e@mail.com",
-#'   password = "mypassword"
-#' )
-#' read.gimlet(arg_list = arg_list)
-#'
 #' @export read.gimlet
 
-read.gimlet <- function(site, email, password, start_date, end_date, arg_list) {
+read.gimlet <- function(site, email, password, start_date, end_date) {
 
 # Handle Arguments --------------------------------------------------------
 
-  # Handle argument list
-  if(!missing(arg_list)) {
-    # Send objects in list to the global environment
-    list2env(x = arg_list, envir = globalenv())
-  }
   # Throw error if required arguments missing
   if(missing(site)) {
     stop("Please specify a Gimlet site.")
