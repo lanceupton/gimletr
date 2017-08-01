@@ -48,6 +48,9 @@ prep.gimlet <- function(data) {
     stringsAsFactors = FALSE
   )
 
+  # Remove bad characters from Id variable
+  data$Id <- gsub(pattern = "[[:punct:]]|[[:space:]]|[[:digit:]]", replacement = "", x = data$Id)
+
   # Format data
   for(n in 1:length(data)) {
     x <- data[,n]
@@ -57,13 +60,10 @@ prep.gimlet <- function(data) {
     # Lower case
     x <- tolower(x = x)
     # Label blank observations
-    i <- which(data[,n] == "")
+    i <- union(which(data[,n] == ""), which(is.na(data[,n])))
     if(length(i) > 0) {data[i,n] <- "BLANK"}
     data[,n] <- x
   }
-
-  # Remove bad characters from Id variable
-  data$Id <- gsub(pattern = "[[:punct:]]|[[:space:]]|[[:digit:]]", replacement = "", x = data$Id)
 
   # Return pre-processed data
   data
