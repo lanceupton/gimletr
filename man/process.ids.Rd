@@ -12,7 +12,7 @@ process.ids(data, id)
 \item{id}{A character vector of users.}
 }
 \value{
-A message containing information about ID documentation.
+A message containing information about ID documentation. If all IDs in \code{data} are found in \code{id}, This function returns \code{TRUE}.
 }
 \description{
 Verify Initials in Gimlet data.

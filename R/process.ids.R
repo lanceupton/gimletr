@@ -5,7 +5,7 @@
 #' @param data A data frame (\code{\link[base]{data.frame}}) with Gimlet-provided variable names.
 #' @param id A character vector of users.
 #'
-#' @return A message containing information about ID documentation.
+#' @return A message containing information about ID documentation. If all IDs in \code{data} are found in \code{id}, This function returns \code{TRUE}.
 #'
 #' @examples
 #' process.ids(prep.gimlet(read.gimlet("mylibrary", "e@mail.com", "password")), ids)
@@ -44,10 +44,12 @@ process.ids <- function(data, id) {
   if(length(i) > 0) {
     # Print them
     message(cat("Undocumented IDs:", unique(data[i,"Id"]), sep = "\n"))
-    # Return related observations
-    return(data[i,])
+    # View related observations
+    View(data[i,])
+    return(FALSE)
   } else {
     message("All IDs in data are documented.")
+    return(TRUE)
   }
 
 }
