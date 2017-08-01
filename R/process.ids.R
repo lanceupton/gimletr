@@ -5,7 +5,7 @@
 #' @param data A data frame (\code{\link[base]{data.frame}}) with Gimlet-provided variable names.
 #' @param id A character vector of users.
 #'
-#' @return A data frame (\code{\link[base]{data.frame}}) containing processed and verified IDs.
+#' @return A message containing information about ID documentation.
 #'
 #' @examples
 #' process.ids(prep.gimlet(read.gimlet("mylibrary", "e@mail.com", "password")), ids)
@@ -44,6 +44,10 @@ process.ids <- function(data, id) {
   if(length(i) > 0) {
     # Print them
     message(cat("Undocumented IDs:", unique(data[i,"Id"]), sep = "\n"))
+    # Return related observations
+    return(data[i,])
+  } else {
+    message("All IDs in data are documented.")
   }
 
 }
