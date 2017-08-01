@@ -60,8 +60,8 @@ prep.gimlet <- function(data) {
     # Lower case
     x <- tolower(x = x)
     # Label blank observations
-    i <- union(which(data[,n] == ""), which(is.na(data[,n])))
-    if(length(i) > 0) {data[i,n] <- "BLANK"}
+    i <- union(which(x == ""), which(is.na(x)))
+    if(length(i) > 0) {x <- "BLANK"}
     data[,n] <- x
   }
 
