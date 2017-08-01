@@ -61,7 +61,11 @@ prep.gimlet <- function(data) {
     x <- tolower(x = x)
     # Label blank observations
     i <- union(which(x == ""), which(is.na(x)))
+<<<<<<< HEAD
     if(length(i) > 0) {x[i] <- "BLANK"}
+=======
+    if(length(i) > 0) {x <- "BLANK"}
+>>>>>>> 090c3c8e98ac7184e3a4d0f6efd6f81683b1ea32
     data[,n] <- x
   }
 
