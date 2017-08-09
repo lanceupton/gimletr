@@ -10,7 +10,7 @@ process.tags(x, tags)
 \item{x, tag}{Character vectors.}
 }
 \value{
-A data frame containing processed data.
+A vector of processed tags.
 }
 \description{
 Verify tags in Gimlet data.

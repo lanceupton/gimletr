@@ -4,7 +4,7 @@
 #'
 #' @param x,tag Character vectors.
 #'
-#' @return A data frame containing processed data.
+#' @return A vector of processed tags.
 #'
 #' @examples
 #' process.tags(data$Tags, tags)
