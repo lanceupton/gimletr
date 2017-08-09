@@ -1,10 +1,10 @@
 #' Pre-process Gimlet data.
 #'
-#' Pre-processes Gimlet data.
+#' Pre-process Gimlet data.
 #'
-#' @param data A data frame (\code{\link[base]{data.frame}}) with Gimlet variables names.
+#' @param data A data frame with raw Gimlet data.
 #'
-#' @return A data frame (\code{\link[base]{data.frame}}) containing pre-processed data.
+#' @return A data frame with pre-processed data.
 #'
 #' @examples
 #' prep.gimlet(read.gimlet("site", "e@mail.com", "pass"))
@@ -15,7 +15,7 @@ prep.gimlet <- function(data) {
 
 # Handle Arguments --------------------------------------------------------
 
-  # Throw error if required arguments missing
+  # Return error for missing arguments
   if(missing(data)) {
     error("Please specify data.")
   }
@@ -25,11 +25,11 @@ prep.gimlet <- function(data) {
     error("data must be a data frame.")
   }
 
-  # Check names
-  x <- c("Initials", "Location", "Format", "Asked at", "Tags", "Question", "Answer")
+  # Vector of names from a Gimlet data query to be pre-processed
+  names <- c("Initials", "Location", "Format", "Asked at", "Tags", "Question", "Answer")
+  # If not all names are in the input data,
   if(!all(x %in% names(data))) {
-    msg <- paste("names(data) must include:", paste(x, collapse = "\n"), sep = "\n")
-    stop(msg)
+    stop(paste("Variables missing from data!", paste(x, collapse = "\n"), sep = "\n"))
   }
 
 
@@ -43,28 +43,38 @@ prep.gimlet <- function(data) {
     DateTime = data$'Asked at',
     TagPre   = data$Tags,
     TagPost  = "",
+    LocSub   = "",
+    TagSub   = "",
     Question = data$Question,
     Answer   = data$Answer,
     stringsAsFactors = FALSE
   )
 
-  # Remove bad characters from Id variable
+  # Remove bad characters from Id
   data$Id <- gsub(pattern = "[[:punct:]]|[[:space:]]|[[:digit:]]", replacement = "", x = data$Id)
 
-  # Format data
+  # For each variable in data,
   for(n in 1:length(data)) {
-    # "Attach" variable
+
     x <- data[,n]
-    # Remove trailing/leading/duplicate whitespace
+
+    # Remove trailing/leading whitespace
     x <- gsub(pattern = "^ +", replacement = "", x = x)
+    # Remove duplicate whitespace
     x <- gsub(pattern = " +", replacement = " ", x = x)
+
     # Lower case
     x <- tolower(x = x)
-    # Label blank observations
+
+    # Index blank or NA obs
     i <- union(which(x == ""), which(is.na(x)))
-    if(length(i) > 0) {x[i] <- "BLANK"}
-    # Reassign to original variable
+    # Label them with BLANK
+    if(length(i) > 0) {
+      x[i] <- "BLANK"
+    }
+
     data[,n] <- x
+
   }
 
   # Remove BLANK from TagPost

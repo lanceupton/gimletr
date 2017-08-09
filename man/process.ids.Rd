@@ -2,22 +2,20 @@
 % Please edit documentation in R/process.ids.R
 \name{process.ids}
 \alias{process.ids}
-\title{Verify Initials in Gimlet data.}
+\title{Verify initials in Gimlet data.}
 \usage{
-process.ids(data, id)
+process.ids(x, id)
 }
 \arguments{
-\item{data}{A data frame (\code{\link[base]{data.frame}}) with Gimlet-provided variable names.}
-
-\item{id}{A character vector of users.}
+\item{x, id}{Character vectors.}
 }
 \value{
-A message containing information about ID documentation. If all IDs in \code{data} are found in \code{id}, This function returns \code{TRUE}.
+\code{TRUE} if all elements in \code{data} are contained within \code{id}. \code{FALSE} and character vector of unmatched elements in there are any.
 }
 \description{
-Verify Initials in Gimlet data.
+Verify initials in Gimlet data.
 }
 \examples{
-process.ids(prep.gimlet(read.gimlet("mylibrary", "e@mail.com", "password")), ids)
+process.ids(data$Initials, idAccepted)
 
 }

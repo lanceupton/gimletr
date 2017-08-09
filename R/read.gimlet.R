@@ -2,14 +2,14 @@
 #'
 #' Download Gimlet data.
 #'
-#' @param site The name of the Gimlet subdomain ("site") to access.
-#' @param email The login email address for the Gimlet site.
-#' @param password The login password for the Gimlet site.
+#' @param site,email,password Strings.
 #' @param start_date,end_date Optional. Objects of class "POSIXt" or "Date".
 #'
-#' @return A data frame (\code{\link[base]{data.frame}}) containing the data returned by Gimlet in the download query.
+#' @return A data frame containing the content of a Gimlet data query.
+#'
 #' @examples
 #' read.gimlet("mysite", "e@mail.com", "mypassword")
+#' read.gimlet("mysite", "e@mail.com", "mypassword", as.Date("2010-01-01"), as.Date("2010-01-31"))
 #'
 #' @export read.gimlet
 
@@ -17,68 +17,68 @@ read.gimlet <- function(site, email, password, start_date, end_date) {
 
 # Handle Arguments --------------------------------------------------------
 
-  # Throw error if required arguments missing
+  # Return for missing arguments
   if(missing(site)) {
     stop("Please specify a Gimlet site.")
   }
   if(missing(email)) {
-    stop("Please specify a login email for the Gimlet site.")
+    stop("Please specify a login email.")
   }
   if(missing(password)) {
-    stop("Please specify a login password for the Gimlet site.")
-  }
-  if(missing(start_date) + missing(end_date) == 1) {
-    stop("Please specify both start_date and end_date, or neither.")
+    stop("Please specify a login password.")
   }
 
-  # Handle report dates
-  # If both are missing
-  if(missing(start_date) + missing(end_date) == 2) {
-    # Set report to last 7 days
+  # Handle start_date and end_date
+  dates <- missing(start_date) + missing(end_date)
+  # One is missing
+  if(dates == 1) {
+    stop("Please specify both start_date and end_date, or neither.")
+  }
+  # Both are missing
+  if(dates == 2) {
+    # Set default values
     start_date <- Sys.Date() - 7
     end_date <- Sys.Date()
-    # Message user about default values
+    # Message user
     message(
-      "No start_date or end_date given. Defaulting to last 7 days.\n",
-      "Using ", start_date, " and ", end_date, "."
+      "start_date and end_date missing. Defaulting to last 7 days.\n",
+      start_date, " - ", end_date
     )
   }
-  # If both are defined
-  if(missing(start_date) + missing(end_date) == 0) {
-    # Format them as Gimlet parameters
+  # Neither are missing
+  if(dates == 0) {
+    # Format variables
     start_date <- format(as.Date(start_date))
     end_date <- format(as.Date(end_date))
     # If unordered
     if(start_date > end_date) {
-      stop("start_date must be before end_date")
+      stop("start_date must occur before end_date.")
     }
   }
 
   # Check argument classes
-  if(!is.character(site) | length(site) > 1) {
+  if(!is.character(site) | length(site) != 1) {
     stop("site must be character class of length 1.")
   }
-  if(grepl(pattern = "[^[:alnum:]|-]", x = site)) {
-    stop("site must have a valid name.\n",
-         "Acceptable characters are: a-z, A-Z, 0-9, and -.")
+  if(grepl(pattern = "[^[:alnum:]|-]", x = site, ignore.case = TRUE)) {
+    stop("site must have a valid name.\nAcceptable characters are: a-z, A-Z, 0-9, and -.")
   }
-  if(!is.character(email) | length(email) > 1) {
+  if(!is.character(email) | length(email) != 1) {
     stop("email must be character class of length 1.")
   }
-  if(!is.character(password) | length(password) > 1) {
+  if(!is.character(password) | length(password) != 1) {
     stop("password must be character class of length 1.")
   }
 
-
 # Function ----------------------------------------------------------------
 
-  # Generate a Gimlet URL based on site
+  # Generate a Gimlet login URL
   url <- paste0("https://", site, ".gimlet.us/users/login")
 
   # Define the html session
   session <- html_session(url)
 
-  # Login algorithm
+  # Fill out login information
   login <- session %>%
     html_node("form") %>%
     html_form() %>%
@@ -87,11 +87,12 @@ read.gimlet <- function(site, email, password, start_date, end_date) {
       password = password
     )
 
-  # Submit the form
+  # Submit login information
   login <- session %>%
     submit_form(login)
 
-  # Data query algorithm
+  # Navigate to Reports > Download
+  # And fill in report dates
   data_query <- login %>%
     follow_link("Reports") %>%
     follow_link("Download") %>%
@@ -102,7 +103,7 @@ read.gimlet <- function(site, email, password, start_date, end_date) {
       'report[end_date]' = end_date
     )
 
-  # Submit a data query
+  # Submit data query
   response <- session %>% submit_form(data_query)
 
   # Return the parsed response content

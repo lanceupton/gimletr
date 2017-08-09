@@ -4,20 +4,18 @@
 \alias{process.tags}
 \title{Verify tags in Gimlet data.}
 \usage{
-process.tags(data, tags)
+process.tags(x, tags)
 }
 \arguments{
-\item{data}{A data frame (\code{\link[base]{data.frame}}) with Gimlet-provided variable names.}
-
-\item{tags}{A character vector of promoted tags.}
+\item{x, tag}{Character vectors.}
 }
 \value{
-A data frame (\code{\link[base]{data.frame}}) containing processed and verified tags.
+A data frame containing processed data.
 }
 \description{
 Verify tags in Gimlet data.
 }
 \examples{
-process.tags(prep.gimlet(read.gimlet("mylibrary", "e@mail.com", "password")), tags)
+process.tags(data$Tags, tags)
 
 }

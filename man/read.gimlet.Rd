@@ -7,21 +7,18 @@
 read.gimlet(site, email, password, start_date, end_date)
 }
 \arguments{
-\item{site}{The name of the Gimlet subdomain ("site") to access.}
-
-\item{email}{The login email address for the Gimlet site.}
-
-\item{password}{The login password for the Gimlet site.}
+\item{site, email, password}{Strings.}
 
 \item{start_date, end_date}{Optional. Objects of class "POSIXt" or "Date".}
 }
 \value{
-A data frame (\code{\link[base]{data.frame}}) containing the data returned by Gimlet in the download query.
+A data frame containing the content of a Gimlet data query.
 }
 \description{
 Download Gimlet data.
 }
 \examples{
 read.gimlet("mysite", "e@mail.com", "mypassword")
+read.gimlet("mysite", "e@mail.com", "mypassword", as.Date("2010-01-01"), as.Date("2010-01-31"))
 
 }

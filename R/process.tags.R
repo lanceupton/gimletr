@@ -2,22 +2,21 @@
 #'
 #' Verify tags in Gimlet data.
 #'
-#' @param data A data frame (\code{\link[base]{data.frame}}) with Gimlet-provided variable names.
-#' @param tags A character vector of promoted tags.
+#' @param x,tag Character vectors.
 #'
-#' @return A data frame (\code{\link[base]{data.frame}}) containing processed and verified tags.
+#' @return A data frame containing processed data.
 #'
 #' @examples
-#' process.tags(prep.gimlet(read.gimlet("mylibrary", "e@mail.com", "password")), tags)
+#' process.tags(data$Tags, tags)
 #'
 #' @export process.tags
 
-process.tags <- function(data, tags) {
+process.tags <- function(x, tags) {
 
 # Handle Arguments --------------------------------------------------------
 
-  # Throw error if required arguments missing
-  if(missing(data)) {
+  # Return error for missing arguments
+  if(missing(x)) {
     error("Please specify data.")
   }
   if(missing(tags)) {
@@ -25,31 +24,35 @@ process.tags <- function(data, tags) {
   }
 
   # Check argument classes
-  if(!is.data.frame(data)) {
-    error("data must be a data frame.")
+  if(!is.character(x)) {
+    error("x must be character class.")
   }
-
-  # Check names
-  x <- c("Id", "Location", "Format", "DateTime", "TagPre", "TagPost", "Question", "Answer")
-  if(!all(x %in% names(data))) {
-    msg <- paste("names(data) must include:", paste(x, collapse = "\n"), sep = "\n")
-    stop(msg)
+  if(!is.character(tags)) {
+    error("tags must be character class.")
   }
-
 
 # Function ----------------------------------------------------------------
 
-  # Predict tags based on first tag
+  # Initiate a vector for output
+  output <- rep("", length(x))
+
+  # For each element in tags,
   for(n in tags) {
-    # Index tag in first position of tagpre
-    i <- grep(x = data$TagPre, pattern = paste0("^", n))
-    # Assign tag
+
+    # Index elements with n in the first position
+    i <- grep(x = x, pattern = paste0("^", n), ignore.case = TRUE)
+
+    # If there are any,
     if(length(i) > 0) {
-      data[i,"TagPost"] <- n
+
+      # Assign tag
+      output[i] <- n
+
     }
+
   }
 
-  # Return processed data, sorted by TagPost
-  data[order(data$TagPost),]
+  # Return output
+  output
 
 }

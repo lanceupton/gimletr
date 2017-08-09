@@ -1,23 +1,22 @@
-#' Verify Initials in Gimlet data.
+#' Verify initials in Gimlet data.
 #'
-#' Verify Initials in Gimlet data.
+#' Verify initials in Gimlet data.
 #'
-#' @param data A data frame (\code{\link[base]{data.frame}}) with Gimlet-provided variable names.
-#' @param id A character vector of users.
+#' @param x,id Character vectors.
 #'
-#' @return A message containing information about ID documentation. If all IDs in \code{data} are found in \code{id}, This function returns \code{TRUE}.
+#' @return \code{TRUE} if all elements in \code{data} are contained within \code{id}. \code{FALSE} and character vector of unmatched elements in there are any.
 #'
 #' @examples
-#' process.ids(prep.gimlet(read.gimlet("mylibrary", "e@mail.com", "password")), ids)
+#' process.ids(data$Initials, idAccepted)
 #'
 #' @export process.ids
 
-process.ids <- function(data, id) {
+process.ids <- function(x, id) {
 
 # Handle Arguments --------------------------------------------------------
 
-  # Throw error if required arguments missing
-  if(missing(data)) {
+  # Return error for missing arguments
+  if(missing(x)) {
     error("Please specify data.")
   }
   if(missing(id)) {
@@ -25,31 +24,33 @@ process.ids <- function(data, id) {
   }
 
   # Check argument classes
-  if(!is.data.frame(data)) {
-    error("data must be a data frame.")
+  if(!is.character(x)) {
+    error("x must be character class.")
   }
-
-  # Check names
-  x <- c("Id", "Location", "Format", "DateTime", "TagPre", "TagPost", "Question", "Answer")
-  if(!all(x %in% names(data))) {
-    msg <- paste("names(data) must include:", paste(x, collapse = "\n"), sep = "\n")
-    stop(msg)
+  if(!is.character(id)) {
+    error("id must be character class.")
   }
-
 
 # Function ----------------------------------------------------------------
 
-  # Index IDs not in list
-  i <- which(!data$Id %in% id)
+  # Index unmatched elements
+  i <- which(!x %in% id)
+
+  # If there are any,
   if(length(i) > 0) {
+
     # Print them
-    message(cat("Undocumented IDs:", unique(data[i,"Id"]), sep = "\n"))
+    message(cat("Unmatched IDs!", unique(x[i]), sep = "\n"))
+
     # View related observations
     View(data[i,])
+
     return(FALSE)
+
   } else {
-    message("All IDs in data are documented.")
+
     return(TRUE)
+
   }
 
 }

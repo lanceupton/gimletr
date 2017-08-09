@@ -7,13 +7,13 @@
 prep.gimlet(data)
 }
 \arguments{
-\item{data}{A data frame (\code{\link[base]{data.frame}}) with Gimlet variables names.}
+\item{data}{A data frame with raw Gimlet data.}
 }
 \value{
-A data frame (\code{\link[base]{data.frame}}) containing pre-processed data.
+A data frame with pre-processed data.
 }
 \description{
-Pre-processes Gimlet data.
+Pre-process Gimlet data.
 }
 \examples{
 prep.gimlet(read.gimlet("site", "e@mail.com", "pass"))
