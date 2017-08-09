@@ -76,16 +76,6 @@ prep.gimlet <- function(data) {
 
   }
 
-  # Index TagPre
-  i <- which(names(data) == "TagPre")
-  # Add TagPost after TagPre
-  data <- data.frame(
-    data[,1:i],
-    TagPost = "",
-    data[,(i+1):length(data)],
-    stringsAsFactors = FALSE
-  )
-
   # Return pre-processed data
   data
 
