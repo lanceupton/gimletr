@@ -42,9 +42,6 @@ process.ids <- function(x, id) {
     # Print them
     message(cat("Unmatched IDs!", unique(x[i]), sep = "\n"))
 
-    # View related observations
-    View(data[i,])
-
     return(FALSE)
 
   } else {
