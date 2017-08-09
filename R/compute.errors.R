@@ -67,7 +67,7 @@ compute.errors <- function(data) {
 
   }
 
-  # Format and return output
+  # Format output
   output <- data.frame(
     NumEnt = as.integer(output$NumEnt),
     NumErr = as.integer(output$NumErr),
@@ -75,5 +75,7 @@ compute.errors <- function(data) {
     Score  = as.character(output$SCore),
     stringsAsFactors = FALSE
   )
+
+  output
 
 }
