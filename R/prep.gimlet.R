@@ -28,10 +28,10 @@ prep.gimlet <- function(data) {
   # Vector of names from a Gimlet data query to be pre-processed
   names <- c("Initials", "Location", "Format", "Asked at", "Tags", "Question", "Answer")
   # Index data names not in names
-  i <- which(!names(data) %in% names)
+  i <- which(!names %in% names(data))
   # If not all names are in the input data,
   if(length(i) > 0) {
-    stop(paste("Variables missing from data!", paste(names(data)[i], collapse = "\n"), sep = "\n"))
+    stop(paste("Variables missing from data!", paste(names[i], collapse = "\n"), sep = "\n"))
   }
 
 
