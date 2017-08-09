@@ -17,18 +17,18 @@ process.ids <- function(x, id) {
 
   # Return error for missing arguments
   if(missing(x)) {
-    error("Please specify data.")
+    stop("Please specify data.")
   }
   if(missing(id)) {
-    error("Please specify accepted IDs.")
+    stop("Please specify accepted IDs.")
   }
 
   # Check argument classes
   if(!is.character(x)) {
-    error("x must be character class.")
+    stop("x must be character class.")
   }
   if(!is.character(id)) {
-    error("id must be character class.")
+    stop("id must be character class.")
   }
 
 # Function ----------------------------------------------------------------

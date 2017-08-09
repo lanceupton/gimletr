@@ -17,12 +17,12 @@ prep.gimlet <- function(data) {
 
   # Return error for missing arguments
   if(missing(data)) {
-    error("Please specify data.")
+    stop("Please specify data.")
   }
 
   # Check argument classes
   if(!is.data.frame(data)) {
-    error("data must be a data frame.")
+    stop("data must be a data frame.")
   }
 
   # Vector of names from a Gimlet data query to be pre-processed

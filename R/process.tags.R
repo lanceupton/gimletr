@@ -17,18 +17,18 @@ process.tags <- function(x, tags) {
 
   # Return error for missing arguments
   if(missing(x)) {
-    error("Please specify data.")
+    stop("Please specify data.")
   }
   if(missing(tags)) {
-    error("Please specify accepted tags.")
+    stop("Please specify accepted tags.")
   }
 
   # Check argument classes
   if(!is.character(x)) {
-    error("x must be character class.")
+    stop("x must be character class.")
   }
   if(!is.character(tags)) {
-    error("tags must be character class.")
+    stop("tags must be character class.")
   }
 
 # Function ----------------------------------------------------------------
