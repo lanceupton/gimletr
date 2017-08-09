@@ -67,7 +67,13 @@ compute.errors <- function(data) {
 
   }
 
-  # Return output
-  output
+  # Format and return output
+  output <- data.frame(
+    NumEnt = as.integer(output$NumEnt),
+    NumErr = as.integer(output$NumErr),
+    PerErr = as.integer(output$PerErr),
+    Score  = as.character(output$SCore),
+    stringsAsFactors = FALSE
+  )
 
 }
