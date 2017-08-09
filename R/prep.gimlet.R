@@ -44,9 +44,6 @@ prep.gimlet <- function(data) {
     Format   = data$Format,
     DateTime = data$'Asked at',
     TagPre   = data$Tags,
-    TagPost  = "",
-    LocSub   = "",
-    TagSub   = "",
     Question = data$Question,
     Answer   = data$Answer,
     stringsAsFactors = FALSE
@@ -79,8 +76,15 @@ prep.gimlet <- function(data) {
 
   }
 
-  # Remove BLANK from TagPost
-  data$TagPost <- ""
+  # Index TagPre
+  i <- which(names(data) == "TagPre")
+  # Add TagPost after TagPre
+  data <- data.frame(
+    data[,1:i],
+    TagPost = "",
+    data[,(i+1):length(data)],
+    stringsAsFactors = FALSE
+  )
 
   # Return pre-processed data
   data
