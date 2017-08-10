@@ -17,3 +17,7 @@ Example scripts which use function in this package can be found [here](http://gi
 `process.ids()` - Processes and verifies Gimlet initials.
 
 `compute.errors()` - Computes summary statistics for each user.
+
+### Installation
+
+To install, execute `devtools::install_github(repo = "lanceupton/gimletr")`
