@@ -2,13 +2,16 @@ Package: gimletr
 Type: Package
 Title: Process, Analyze, and Visualize Gimlet data.
 Version: 0.1.0
-Author: Upton, Lance T.
+Author: Upton, Lance T. <lance.upton@gmail.com>
 Maintainer: Upton, Lance T. <lance.upton@gmail.com>
 Description: Summary of functions:
-    \code{read.gimlet()} - Downloads Gimlet data from start_date to end_date.
-    \code{clean.gimlet()} - Pre-processes Gimlet data.
-    \code{process.tags()} - Processes and verifies Gimlet Tags.
-    \code{process.ids()} - Processes and verifies Gimlet Initials.
+    \code{read.gimlet()} - Downloads Gimlet data.
+    \code{prep.gimlet()} - Pre-processes Gimlet data.
+    \code{process.tags()} - Processes and verifies Gimlet tags.
+    \code{process.ids()} - Processes and verifies Gimlet initials.
+    \code{compute.errors()} - Computes summary statistics for each user.
+    Example scripts which use function in this package can be found here:
+    http://github.com/lanceupton/GimletExamples
 License: MIT
 Encoding: UTF-8
 LazyData: true
