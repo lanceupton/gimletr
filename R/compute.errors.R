@@ -39,11 +39,6 @@ compute.errors <- function(data, groups) {
     stringsAsFactors = FALSE
   )
 
-  # Add groups if given
-  if(!missing(groups)) {
-    output$Group <- group
-  }
-
   # Index observations where tag was incorrect
   i.error <- which(data$TagPre != data$TagPost)
 
