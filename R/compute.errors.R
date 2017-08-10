@@ -72,7 +72,7 @@ compute.errors <- function(data) {
     NumEnt = as.integer(output$NumEnt),
     NumErr = as.integer(output$NumErr),
     PerErr = as.integer(output$PerErr),
-    Score  = as.character(output$SCore),
+    Score  = as.character(output$Score),
     stringsAsFactors = FALSE
   )
 
