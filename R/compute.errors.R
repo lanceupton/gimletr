@@ -102,8 +102,8 @@ compute.errors <- function(data, groups) {
       # Index group
       i <- which(groups == g[n])
       # Get values
-      ent <- sum(output[i,"NumEnt"])
-      err <- sum(output[i,"NumErr"])
+      ent <- length(i)
+      err <- length(intersect(i, i.error))
       per <- (1 - err/ent) * 100
       score <- paste0(ent - err, "/", ent, " | ", round(per, 0), "%")
 
