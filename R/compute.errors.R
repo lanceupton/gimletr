@@ -118,16 +118,6 @@ compute.errors <- function(data, groups) {
 
   }
 
-  # Format output
-  output <- data.frame(
-    Id     = output$Id,
-    NumEnt = output$NumEnt,
-    NumErr = output$NumErr,
-    PerErr = output$PerErr,
-    Score  = output$Score,
-    stringsAsFactors = FALSE
-  )
-
   output
 
 }
