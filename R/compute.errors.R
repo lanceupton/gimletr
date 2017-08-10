@@ -69,6 +69,7 @@ compute.errors <- function(data) {
 
   # Format output
   output <- data.frame(
+    Id     = as.character(output$Id),
     NumEnt = as.integer(output$NumEnt),
     NumErr = as.integer(output$NumErr),
     PerErr = as.integer(output$PerErr),
