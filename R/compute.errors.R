@@ -45,12 +45,10 @@ compute.errors <- function(data, groups, ignore) {
 
   # Index observations where tag was incorrect
   # Remove errors from ignored index
-  if(missing(ignore)) {
+  if(missing(ignore) | length(ignore) == 0) {
     i.error <- which(data$TagPre != data$TagPost)
   } else {
-    if(length(ignore) > 0) {
-      i.error <- intersect(which(data$TagPre != data$TagPost), (1:nrow(data))[-ignore])
-    }
+    i.error <- intersect(which(data$TagPre != data$TagPost), (1:nrow(data))[-ignore])
   }
 
   # For each row in output,
