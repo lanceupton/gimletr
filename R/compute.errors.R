@@ -30,6 +30,7 @@ compute.errors <- function(data, groups, ignore) {
     stop("ignore must be a vector of integers.")
   }
 
+
 # Function ----------------------------------------------------------------
 
   # Initiate a data frame for output
@@ -47,7 +48,9 @@ compute.errors <- function(data, groups, ignore) {
   if(missing(ignore)) {
     i.error <- which(data$TagPre != data$TagPost)
   } else {
-    i.error <- intersect(which(data$TagPre != data$TagPost), (1:nrow(data))[-ignore])
+    if(length(ignore) > 0) {
+      i.error <- intersect(which(data$TagPre != data$TagPost), (1:nrow(data))[-ignore])
+    }
   }
 
   # For each row in output,
