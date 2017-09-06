@@ -4,21 +4,22 @@
 \alias{compute.errors}
 \title{Compute user tagging errors.}
 \usage{
-compute.errors(data, groups)
+compute.errors(data, groups, ignore)
 }
 \arguments{
 \item{data}{A data frame containing \code{Id}, \code{TagPre}, and \code{TagPost}.}
 
 \item{groups}{Optional. A character vector.}
+
+\item{ignore}{Optional. An integer vector.}
 }
 \value{
-A data frame containing \code{NumEnt}, \code{NumErr}, \code{PerErr}, and \code{Score} for each \code{Id}. If \code{groups} is specified, group errors are also computed.
+A data frame containing \code{NumEnt}, \code{NumErr}, \code{PerErr}, and \code{Score} for each \code{Id}. If \code{groups} is specified, group errors are also computed. If \code{ignore} is specified, those indices are ignored when calculating \code{NumErr}.
 }
 \description{
 Compute user tagging errors.
 }
 \examples{
-compute.errors(data)
-compute.errors(data, groupnames)
+compute.errors(data = data, groups = groupnames, ignore = ignore_these_errors)
 
 }

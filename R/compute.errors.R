@@ -4,16 +4,16 @@
 #'
 #' @param data A data frame containing \code{Id}, \code{TagPre}, and \code{TagPost}.
 #' @param groups Optional. A character vector.
+#' @param ignore Optional. An integer vector.
 #'
-#' @return A data frame containing \code{NumEnt}, \code{NumErr}, \code{PerErr}, and \code{Score} for each \code{Id}. If \code{groups} is specified, group errors are also computed.
+#' @return A data frame containing \code{NumEnt}, \code{NumErr}, \code{PerErr}, and \code{Score} for each \code{Id}. If \code{groups} is specified, group errors are also computed. If \code{ignore} is specified, those indices are ignored when calculating \code{NumErr}.
 #'
 #' @examples
-#' compute.errors(data)
-#' compute.errors(data, groupnames)
+#' compute.errors(data = data, groups = groupnames, ignore = ignore_these_errors)
 #'
 #' @export compute.errors
 
-compute.errors <- function(data, groups) {
+compute.errors <- function(data, groups, ignore) {
 
 # Handle Arguments --------------------------------------------------------
 
@@ -25,6 +25,9 @@ compute.errors <- function(data, groups) {
   # Check argument classes
   if(!is.data.frame(data)) {
     stop("data must be a data frame.")
+  }
+  if(!missing(ignore) & !is.integer(ignore)) {
+    stop("ignore must be a vector of integers.")
   }
 
 # Function ----------------------------------------------------------------
@@ -40,7 +43,12 @@ compute.errors <- function(data, groups) {
   )
 
   # Index observations where tag was incorrect
-  i.error <- which(data$TagPre != data$TagPost)
+  # Remove errors from ignored index
+  if(missing(ignore)) {
+    i.error <- which(data$TagPre != data$TagPost)
+  } else {
+    i.error <- intersect(which(data$TagPre != data$TagPost), ignore)
+  }
 
   # For each row in output,
   for(n in 1:nrow(output)) {
