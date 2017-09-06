@@ -47,7 +47,7 @@ compute.errors <- function(data, groups, ignore) {
   if(missing(ignore)) {
     i.error <- which(data$TagPre != data$TagPost)
   } else {
-    i.error <- intersect(which(data$TagPre != data$TagPost), ignore)
+    i.error <- intersect(which(data$TagPre != data$TagPost), (1:nrow(data))[-ignore])
   }
 
   # For each row in output,
