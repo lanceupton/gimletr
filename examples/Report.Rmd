@@ -1,0 +1,73 @@
+---
+title: Desk Statistics
+subtitle: Error & Summary Report
+author: Upton, Lance T.
+date: `r par$name`
+output:
+  pdf_document:
+    toc: true
+    toc_depth: 2
+    fig_caption: false
+    latex_engine: xelatex
+header-includes:
+  \usepackage{fancyhdr}
+  \pagestyle{fancy}
+  \fancyhead[CO,CE]{`r par$name`}
+  \geometry{letterpaper, left=0.5in, right=0.5in, top=1in, bottom=1in}
+---
+
+
+```{r errors, echo = FALSE, results = 'asis'}
+
+writeLines("\\newpage")
+writeLines("# Errors")
+
+# Index errors
+i <- which(dat$clean$TagPre != dat$clean$TagPost)
+
+# For each id,
+for(n in dat$id$Id) {
+  
+  # Index id in stats table
+  ix <- which(stats$Id == n)
+  
+  # Pass if no entries
+  if(stats[ix,"NumEnt"] == 0) {next}
+  
+  # Write score
+  writeLines(paste("##", stats[ix,"Id"], "\n", sep = ""))
+  writeLines(paste("**", stats[ix,"Score"], "**", "\n", sep = ""))
+  
+  # If there are errors,
+  if(stats[ix,"NumErr"] > 0) {
+    
+    # Index them
+    ix2 <- intersect(which(dat$report$Id == n), i)
+    
+    # Assign for printing
+    page <- dat$report[ix2,-which(names(dat$report) == "Id")]
+    row.names(page) <- NULL
+    
+    # Print the page
+    writeLines(pander(page, split.cells = c(4, 13, 13, 35, 35), split.table = Inf))
+    writeLines("\\newpage")
+    
+  } else {
+    
+    writeLines("No errors. Nice!\n")
+    writeLines("\\newpage")
+    
+  }
+  
+}
+
+```
+
+
+```{r summary, echo = FALSE, results = 'asis'}
+
+writeLines("# Summary")
+
+pandoc.table(t = table, split.table = Inf, keep.line.breaks = FALSE)
+
+```
