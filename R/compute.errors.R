@@ -26,8 +26,10 @@ compute.errors <- function(data, groups, ignore) {
   if(!is.data.frame(data)) {
     stop("data must be a data frame.")
   }
-  if(!missing(ignore) & !is.integer(ignore)) {
-    stop("ignore must be a vector of integers.")
+  if(!missing(ignore)) {
+    if(!is.integer(ignore)) {
+      stop("ignore must be a vector of integers.")
+    }
   }
 
 
@@ -45,10 +47,14 @@ compute.errors <- function(data, groups, ignore) {
 
   # Index observations where tag was incorrect
   # Remove errors from ignored index
-  if(missing(ignore) | length(ignore) == 0) {
+  if(missing(ignore)) {
     i.error <- which(data$TagPre != data$TagPost)
   } else {
-    i.error <- intersect(which(data$TagPre != data$TagPost), (1:nrow(data))[-ignore])
+    if(length(ignore) == 0) {
+      i.error <- which(data$TagPre != data$TagPost)
+    } else {
+      i.error <- intersect(which(data$TagPre != data$TagPost), (1:nrow(data))[-ignore])
+    }
   }
 
   # For each row in output,
