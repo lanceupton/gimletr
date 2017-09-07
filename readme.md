@@ -2,7 +2,7 @@ gimletr: Process, Analyze, and Visualize Gimlet data
 ================
 Upton, Lance T.
 
-Example scripts which use function in this package can be found [here](http://github.com/lanceupton/GimletExamples).
+Example scripts are included in examples/.
 
 [Gimlet](https://gimlet.us/) is a product of Sidecar Publications, LLC. Check it out!
 
