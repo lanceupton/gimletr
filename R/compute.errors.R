@@ -57,17 +57,20 @@ compute.errors <- function(initials, tagpre, tagpost, groups, ignore) {
 
   # Initiate a data frame for output
   output <- data.frame(
-    initials   = unique(initials),
-    ent = 0,
-    err = 0,
-    per = 0,
-    score  = '',
+    initials = unique(initials),
+    group    = '',
+    ent      = 0,
+    err      = 0,
+    per      = 0,
+    score    = '',
     stringsAsFactors = FALSE
   )
 
+  # Fill in group
+  output$group <- groups[match(output$initials, initials)]
+
   # Index observations where tag was incorrect
   i.error <- which(tagpre != tagpost)
-
   # Remove errors from ignored index
   if(!missing(ignore)) {
       i.error <- i.error[!i.error %in% ignore]
@@ -76,7 +79,7 @@ compute.errors <- function(initials, tagpre, tagpost, groups, ignore) {
   # For each row in output,
   for(n in 1:nrow(output)) {
 
-    # Index obs for Id
+    # Index obs for user
     i <- which(initials == output$initials[n])
 
     # Count entries
@@ -103,6 +106,7 @@ compute.errors <- function(initials, tagpre, tagpost, groups, ignore) {
   # Generate totals
   total <- tibble(
     initials = 'total',
+    group    = 'total',
     ent      = sum(output$ent),
     err      = sum(output$err),
     per      = (1 - err / ent) * 100,
@@ -117,16 +121,6 @@ compute.errors <- function(initials, tagpre, tagpost, groups, ignore) {
 
   if(!missing(groups)) {
 
-    # Initiate a data frame of data to add
-    group_totals <- data.frame(
-      initials = unique(groups),
-      ent      = 0,
-      err      = 0,
-      per      = 0,
-      score    = '',
-      stringsAsFactors = FALSE
-    )
-
     # For each group,
     for(n in unique(groups)) {
       # Index group
@@ -134,7 +128,8 @@ compute.errors <- function(initials, tagpre, tagpost, groups, ignore) {
 
       # Generate totals
       total <- tibble(
-        initials = n,
+        initials = 'total',
+        group    = n,
         ent      = length(i),
         err      = length(intersect(i, i.error)),
         per      = (1 - err / ent) * 100,
@@ -145,7 +140,6 @@ compute.errors <- function(initials, tagpre, tagpost, groups, ignore) {
       output <- rbind(output, total)
 
     }
-
 
   }
 
