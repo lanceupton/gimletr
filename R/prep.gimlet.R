@@ -40,17 +40,15 @@ prep.gimlet <- function(data) {
   # Select data
   output <- data.frame(
     # Remove bad characters from Id
-    Id       = gsub(pattern = '[[:punct:]]|[[:space:]]|[[:digit:]]', replacement = '', x = data$Initials),
-    Location = data$Location,
-    Format   = data$Format,
-    DateTime = data$'Asked at',
-    TagPre   = data$Tags,
-    Question = data$Question,
-    Answer   = data$Answer,
+    initials = gsub(pattern = '[[:punct:]]|[[:space:]]|[[:digit:]]', replacement = '', x = data$Initials),
+    location = data$Location,
+    format   = data$Format,
+    datetime = data$'Asked at',
+    tagpre   = data$Tags,
+    question = data$Question,
+    answer   = data$Answer,
     stringsAsFactors = FALSE
   )
-
-
 
   # For each variable in data,
   for(n in 1:length(output)) {
