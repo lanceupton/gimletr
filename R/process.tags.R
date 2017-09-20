@@ -61,10 +61,10 @@ process.tags <- function(tags, promoted, alt) {
   if(!missing(alt)) {
 
     # Loop through each element in alt
-    for(n in alt) {
+    for(n in 1:length(alt)) {
 
       # Generate the regular expression
-      expr <- paste0('^(', paste0(n, collapse = '|'), ')')
+      expr <- paste0('^(', paste0(alt[n], collapse = '|'), ')')
 
       # Index first-position matches
       i <- grep(x = tags, pattern = expr, ignore.case = TRUE)
@@ -73,7 +73,7 @@ process.tags <- function(tags, promoted, alt) {
       if(length(i) > 0) {
 
         # Assign tag
-        output[i] <- names(n)
+        output[i] <- names(alt)[n]
 
       }
 
