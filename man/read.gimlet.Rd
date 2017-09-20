@@ -9,7 +9,7 @@ read.gimlet(site, email, password, start_date, end_date)
 \arguments{
 \item{site, email, password}{Strings.}
 
-\item{start_date, end_date}{Optional. Objects of class "POSIXt" or "Date".}
+\item{start_date, end_date}{Optional. Objects of class 'POSIXt' or 'Date'.}
 }
 \value{
 A data frame containing the content of a Gimlet data query.
@@ -18,7 +18,7 @@ A data frame containing the content of a Gimlet data query.
 Download Gimlet data.
 }
 \examples{
-read.gimlet("mysite", "e@mail.com", "mypassword")
-read.gimlet("mysite", "e@mail.com", "mypassword", as.Date("2010-01-01"), as.Date("2010-01-31"))
+read.gimlet('mysite', 'e@mail.com', 'mypassword')
+read.gimlet('mysite', 'e@mail.com', 'mypassword', as.Date('2010-01-01'), as.Date('2010-01-31'))
 
 }
