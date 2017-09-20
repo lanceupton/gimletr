@@ -2,34 +2,54 @@
 #'
 #' Compute user tagging errors.
 #'
-#' @param data A data frame containing \code{Id}, \code{TagPre}, and \code{TagPost}.
+#' @param initials,tagpre,tagpost Character vectors.
 #' @param groups Optional. A character vector.
 #' @param ignore Optional. An integer vector.
 #'
-#' @return A data frame containing \code{NumEnt}, \code{NumErr}, \code{PerErr}, and \code{Score} for each \code{Id}. If \code{groups} is specified, group errors are also computed. If \code{ignore} is specified, those indices are ignored when calculating \code{NumErr}.
+#' @return A data frame containing \code{ent}, \code{err}, \code{per}, and \code{score} by each level in \code{initials}. If \code{groups} is specified, group errors are also computed. If \code{ignore} is specified, those indices are ignored when calculating \code{err}.
 #'
 #' @examples
-#' compute.errors(data = data, groups = groupnames, ignore = ignore_these_errors)
+#' compute.errors(initials = data$initials, tagpre = data$tagpre, tagpost = data$tagpost, groups = data$group)
 #'
 #' @export compute.errors
 
-compute.errors <- function(data, groups, ignore) {
+compute.errors <- function(initials, tagpre, tagpost, groups, ignore) {
 
 # Handle Arguments --------------------------------------------------------
 
   # Return error for missing arguments
-  if(missing(data)) {
-    stop("Please specify data.")
+  if(missing(initials)) {
+    stop('Please specify initials.')
   }
-
+  if(missing(tagpre)) {
+    stop('Please specify tagpre.')
+  }
+  if(missing(tagpost)) {
+    stop('Please specify tagpost.')
+  }
   # Check argument classes
-  if(!is.data.frame(data)) {
-    stop("data must be a data frame.")
+  if(!is.character(initials)) {
+    stop('intitials must be character class.')
+  }
+  if(!is.character(tagpre)) {
+    stop('tagpre must be character class.')
+  }
+  if(!is.character(tagpost)) {
+    stop('tagpost must be character class.')
   }
   if(!missing(ignore)) {
     if(!is.integer(ignore)) {
-      stop("ignore must be a vector of integers.")
+      stop('ignore must be a vector of integers.')
     }
+  }
+
+  # Vector of variable lengths
+  x <- c(length(initials), length(tagpre), length(tagpost))
+  # If groups is specified, add it
+  if(!missing(groups)) {x <- c(x, length(groups))}
+  # Check equal lengths
+  if(!all(x == x[1])) {
+    stop('variables must be of same length.')
   }
 
 
@@ -37,99 +57,95 @@ compute.errors <- function(data, groups, ignore) {
 
   # Initiate a data frame for output
   output <- data.frame(
-    Id     = unique(data$Id),
-    NumEnt = 0,
-    NumErr = 0,
-    PerErr = 0,
-    Score  = "",
+    initials   = unique(initials),
+    ent = 0,
+    err = 0,
+    per = 0,
+    score  = '',
     stringsAsFactors = FALSE
   )
 
   # Index observations where tag was incorrect
+  i.error <- which(tagpre != tagpost)
+
   # Remove errors from ignored index
-  if(missing(ignore)) {
-    i.error <- which(data$TagPre != data$TagPost)
-  } else {
-    if(length(ignore) == 0) {
-      i.error <- which(data$TagPre != data$TagPost)
-    } else {
-      i.error <- intersect(which(data$TagPre != data$TagPost), (1:nrow(data))[-ignore])
-    }
+  if(!missing(ignore)) {
+      i.error <- i.error[!i.error %in% ignore]
   }
 
   # For each row in output,
   for(n in 1:nrow(output)) {
 
     # Index obs for Id
-    i <- which(data$Id == output[n,"Id"])
+    i <- which(initials == output$initials[n])
 
     # Count entries
     ent <- length(i)
-
     # Count errors
     err <- length(intersect(i.error, i))
-
-    # Calculate percent error
-    per <- (1 - err/ent) * 100
-
+    # Calculate percent
+    per <- (1 - err / ent) * 100
     # Generate a score
     if(ent == 0) {
-      score <- "---"
+      score <- '---'
     } else {
-      score <- paste0(ent - err, "/", ent, " | ", round(per, 0), "%")
+      score <- paste0(ent - err, '/', ent, ' | ', round(per, 0), '%')
     }
 
-    # Write numeric
-    output[n,c("NumEnt", "NumErr", "PerErr")] <- c(ent, err, round(per, 2))
-    # Write character
-    output[n,"Score"] <- score
+    # Write variables
+    output$ent[n] <- ent
+    output$err[n] <- err
+    output$per[n] <- round(per, 2)
+    output$score[n] <- score
 
   }
 
-  # Add total
-  ent <- sum(output$NumEnt)
-  err <- sum(output$NumErr)
-  per <- (1 - err/ent) * 100
-  score <- paste0(ent - err, "/", ent, " | ", round(per, 0), "%")
-  # Write numeric
-  output[n+1,c("NumEnt", "NumErr", "PerErr")] <- c(ent, err, round(per, 2))
-  # Write character
-  output[n+1,c("Id","Score")] <- c("total", score)
+  # Generate totals
+  total <- tibble(
+    initials = 'total',
+    ent      = sum(output$ent),
+    err      = sum(output$err),
+    per      = (1 - err / ent) * 100,
+    score    = paste0(ent - err, '/', ent, ' | ', round(per, 0), '%')
+  )
 
-  # Add groups (if specified)
+  # Bind
+  output <- rbind(output, total)
+
+
+# Handle Groups -----------------------------------------------------------
+
   if(!missing(groups)) {
 
     # Initiate a data frame of data to add
-    add <- data.frame(
-      Id     = "",
-      NumEnt = 0,
-      NumErr = 0,
-      PerErr = 0,
-      Score  = "",
+    group_totals <- data.frame(
+      initials = unique(groups),
+      ent      = 0,
+      err      = 0,
+      per      = 0,
+      score    = '',
       stringsAsFactors = FALSE
     )
 
-    # Vector of unique groups
-    g <- unique(groups)
-
     # For each group,
-    for(n in 1:length(g)) {
+    for(n in unique(groups)) {
       # Index group
-      i <- which(groups == g[n])
-      # Get values
-      ent <- length(i)
-      err <- length(intersect(i, i.error))
-      per <- (1 - err/ent) * 100
-      score <- paste0(ent - err, "/", ent, " | ", round(per, 0), "%")
+      i <- which(groups == n)
 
-      # Write numeric
-      add[n,c("NumEnt", "NumErr", "PerErr")] <- c(ent, err, round(per, 2))
-      # Write character
-      add[n,c("Id","Score")] <- c(g[n], score)
+      # Generate totals
+      total <- tibble(
+        initials = n,
+        ent      = length(i),
+        err      = length(intersect(i, i.error)),
+        per      = (1 - err / ent) * 100,
+        score    = paste0(ent - err, '/', ent, ' | ', round(per, 0), '%')
+      )
+
+      # Bind
+      output <- rbind(output, total)
+
     }
 
-    # Bind to output
-    output <- rbind(output, add)
 
   }
 
