@@ -2,51 +2,77 @@
 #'
 #' Verify tags in Gimlet data.
 #'
-#' @param x,tag Character vectors.
+#' @param tags,promoted,alt Character vectors.
 #'
 #' @return A vector of processed tags.
 #'
 #' @examples
-#' process.tags(data$Tags, tags)
+#' process.tags(tags = data$Tags, promoted = c('policy', 'circulation'))
+#' process.tags(tags = data$Tags, promoted = c('policy', 'circulation'), alt = list(policy = c('policies', 'hours'), circulation = c('circ', 'ill', 'borrowing')))
 #'
 #' @export process.tags
 
-process.tags <- function(x, tags) {
+process.tags <- function(tags, promoted, alt) {
 
 # Handle Arguments --------------------------------------------------------
 
   # Return error for missing arguments
-  if(missing(x)) {
-    stop("Please specify data.")
-  }
   if(missing(tags)) {
-    stop("Please specify accepted tags.")
+    stop('Please specify tags.')
   }
-
+  if(missing(promoted)) {
+    stop('Please specify promoted.')
+  }
   # Check argument classes
-  if(!is.character(x)) {
-    stop("x must be character class.")
+  if(!is.character(tags)) {
+    stop('tags must be character class.')
   }
   if(!is.character(tags)) {
-    stop("tags must be character class.")
+    stop('promoted must be character class.')
+  }
+  if(!missing(alt)) {
+    if(!is.list(alt)) {
+      stop('alt must be a list.')
+    }
   }
 
 # Function ----------------------------------------------------------------
 
   # Initiate a vector for output
-  output <- rep("", length(x))
+  output <- rep('', length(tags))
 
-  # For each element in tags,
-  for(n in tags) {
+  # For each promoted tag,
+  for(n in promoted) {
 
-    # Index elements with n in the first position
-    i <- grep(x = x, pattern = paste0("^", n), ignore.case = TRUE)
+    # Index first-position matches
+    i <- grep(x = tags, pattern = paste0('^', n), ignore.case = TRUE)
 
     # If there are any,
     if(length(i) > 0) {
 
       # Assign tag
       output[i] <- n
+
+    }
+
+  }
+
+  # If alt is supplied,
+  if(!missing(alt)) {
+
+    # Loop through each element in alt
+    for(n in alt) {
+
+      # Index first-position matches
+      i <- grep(x = tags, pattern = paste0('^', n), ignore.case = TRUE)
+
+      # If there are any,
+      if(length(i) > 0) {
+
+        # Assign tag
+        output[i] <- names(n)
+
+      }
 
     }
 
