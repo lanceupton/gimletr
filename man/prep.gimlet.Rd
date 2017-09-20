@@ -16,6 +16,6 @@ A data frame with pre-processed data.
 Pre-process Gimlet data.
 }
 \examples{
-prep.gimlet(read.gimlet("site", "e@mail.com", "pass"))
+prep.gimlet(data = read.gimlet('site', 'e@mail.com', 'pass'))
 
 }

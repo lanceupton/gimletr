@@ -7,7 +7,7 @@
 #' @return A data frame with pre-processed data.
 #'
 #' @examples
-#' prep.gimlet(read.gimlet("site", "e@mail.com", "pass"))
+#' prep.gimlet(data = read.gimlet('site', 'e@mail.com', 'pass'))
 #'
 #' @export prep.gimlet
 
@@ -17,29 +17,30 @@ prep.gimlet <- function(data) {
 
   # Return error for missing arguments
   if(missing(data)) {
-    stop("Please specify data.")
+    stop('Please specify data.')
   }
 
   # Check argument classes
   if(!is.data.frame(data)) {
-    stop("data must be a data frame.")
+    stop('data must be a data frame.')
   }
 
   # Vector of names from a Gimlet data query to be pre-processed
-  names <- c("Initials", "Location", "Format", "Asked at", "Tags", "Question", "Answer")
+  names <- c('Initials', 'Location', 'Format', 'Asked at', 'Tags', 'Question', 'Answer')
   # Index data names not in names
   i <- which(!names %in% names(data))
   # If not all names are in the input data,
   if(length(i) > 0) {
-    stop(paste("Variables missing from data!", paste(names[i], collapse = "\n"), sep = "\n"))
+    stop(paste('Important variables missing from data!', paste(names[i], collapse = '\n'), sep = '\n'))
   }
 
 
 # Function ----------------------------------------------------------------
 
   # Select data
-  data <- data.frame(
-    Id       = data$Initials,
+  output <- data.frame(
+    # Remove bad characters from Id
+    Id       = gsub(pattern = '[[:punct:]]|[[:space:]]|[[:digit:]]', replacement = '', x = data$Initials),
     Location = data$Location,
     Format   = data$Format,
     DateTime = data$'Asked at',
@@ -49,34 +50,33 @@ prep.gimlet <- function(data) {
     stringsAsFactors = FALSE
   )
 
-  # Remove bad characters from Id
-  data$Id <- gsub(pattern = "[[:punct:]]|[[:space:]]|[[:digit:]]", replacement = "", x = data$Id)
+
 
   # For each variable in data,
-  for(n in 1:length(data)) {
+  for(n in 1:length(output)) {
 
-    x <- data[,n]
+    x <- output[,n]
 
     # Remove trailing/leading whitespace
-    x <- gsub(pattern = "^ +", replacement = "", x = x)
+    x <- gsub(pattern = '^ +', replacement = '', x = x)
     # Remove duplicate whitespace
-    x <- gsub(pattern = " +", replacement = " ", x = x)
+    x <- gsub(pattern = ' +', replacement = ' ', x = x)
 
     # Lower case
     x <- tolower(x = x)
 
     # Index blank or NA obs
-    i <- union(which(x == ""), which(is.na(x)))
+    i <- union(which(x == ''), which(is.na(x)))
     # Label them with BLANK
     if(length(i) > 0) {
-      x[i] <- "BLANK"
+      x[i] <- 'BLANK'
     }
 
-    data[,n] <- x
+    output[,n] <- x
 
   }
 
-  # Return pre-processed data
-  data
+  # Return output
+  output
 
 }
