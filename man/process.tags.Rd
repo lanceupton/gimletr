@@ -4,10 +4,10 @@
 \alias{process.tags}
 \title{Verify tags in Gimlet data.}
 \usage{
-process.tags(tags, promoted, alt)
+process.tags(tags, promoted, regex)
 }
 \arguments{
-\item{tags, promoted, alt}{Character vectors.}
+\item{tags, promoted, regex}{Character vectors.}
 }
 \value{
 A vector of processed tags.
@@ -17,6 +17,5 @@ Verify tags in Gimlet data.
 }
 \examples{
 process.tags(tags = data$Tags, promoted = c('policy', 'circulation'))
-process.tags(tags = data$Tags, promoted = c('policy', 'circulation'), alt = list(policy = c('policies', 'hours'), circulation = c('circ', 'ill', 'borrowing')))
 
 }
