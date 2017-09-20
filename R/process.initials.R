@@ -19,7 +19,7 @@ process.initials <- function(initials, users) {
   if(missing(initials)) {
     stop('Please specify initials.')
   }
-  if(missing(id)) {
+  if(missing(users)) {
     stop('Please specify users.')
   }
   # Check argument classes
