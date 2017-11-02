@@ -72,13 +72,13 @@ read.gimlet <- function(site, email, password, start_date, end_date) {
 
 # Function ----------------------------------------------------------------
 
+  ## LOGIN
+
   # Generate a Gimlet login URL
   url <- paste0('https://', site, '.gimlet.us/users/login')
-
-  # Define the html session
-  session <- html_session(url)
-
-  # Fill out login information
+  # Start a session
+  session <- html_session(url = url)
+  # Get form and fill in values
   login <- session %>%
     html_node('form') %>%
     html_form() %>%
@@ -86,19 +86,19 @@ read.gimlet <- function(site, email, password, start_date, end_date) {
       email = email,
       password = password
     )
-
-  # Submit login information
+  # Submit login form
   login <- suppressMessages(
     session %>%
-      submit_form(login)
+      submit_form(form = login)
   )
 
-  # Navigate to Reports > Download
-  # And fill in report dates
+  ## GET DATA
   data_query <- suppressMessages(
     login %>%
+      # Navigate to download page
       follow_link('Reports') %>%
       follow_link('Download') %>%
+      # Get form and fill in values
       html_node('form') %>%
       html_form() %>%
       set_values(
@@ -106,14 +106,12 @@ read.gimlet <- function(site, email, password, start_date, end_date) {
         'report[end_date]' = end_date
       )
   )
-
-  # Submit data query
+  # Submit data query form
   response <- suppressMessages(
-    session %>%
-      submit_form(data_query)
+    session %>% submit_form(data_query)
   )
 
   # Return the parsed response content
-  content(response$response, 'parsed')
+  suppressMessages(content(x = response$response, as = 'parsed'))
 
 }
