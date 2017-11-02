@@ -38,7 +38,7 @@ process.tags <- function(tags, promoted, regex) {
 # Function ----------------------------------------------------------------
 
   # Initiate a vector for output
-  output <- rep('', length(tags))
+  output <- character(length(tags))
 
   # If regex is not supplied,
   if(missing(regex)) {
@@ -49,15 +49,13 @@ process.tags <- function(tags, promoted, regex) {
   # For each index in promoted,
   for(n in 1:length(promoted)) {
 
-    # Index first-position matches
+    # Index matches
     i <- grep(x = tags, pattern = regex[n], ignore.case = TRUE)
 
     # If there are any,
     if(length(i) > 0) {
-
       # Assign tag
       output[i] <- promoted[n]
-
     }
 
   }
