@@ -8,10 +8,9 @@ Description: Summary of functions:
     \code{read.gimlet()} - Downloads Gimlet data.
     \code{prep.gimlet()} - Pre-processes Gimlet data.
     \code{process.tags()} - Processes and verifies Gimlet tags.
-    \code{process.ids()} - Processes and verifies Gimlet initials.
-    \code{compute.errors()} - Computes summary statistics for each user.
+    \code{compute.errors()} - Computes user summary statistics.
     Example scripts which use function in this package can be found here:
-    http://github.com/lanceupton/GimletExamples
+    http://github.com/lanceupton/gimletr/examples
 License: MIT
 Encoding: UTF-8
 LazyData: true

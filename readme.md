@@ -14,9 +14,7 @@ Example scripts are included in examples/.
 
 `process.tags()` - Processes and verifies Gimlet tags.
 
-`process.ids()` - Processes and verifies Gimlet initials.
-
-`compute.errors()` - Computes summary statistics for each user.
+`compute.errors()` - Computes user summary statistics.
 
 ### Installation
 
