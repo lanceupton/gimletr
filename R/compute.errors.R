@@ -92,7 +92,7 @@ compute.errors <- function(initials, tagpre, tagpost, groups, ignore) {
     if(ent == 0) {
       score <- '---'
     } else {
-      score <- paste0(ent - err, '/', ent, ' | ', round(per, 0), '%')
+      score <- paste0(ent - err, '/', ent, ' **', round(per, 0), '%**')
     }
 
     # Write variables
@@ -110,7 +110,7 @@ compute.errors <- function(initials, tagpre, tagpost, groups, ignore) {
     ent      = sum(output$ent),
     err      = sum(output$err),
     per      = (1 - err / ent) * 100,
-    score    = paste0(ent - err, '/', ent, ' | ', round(per, 0), '%')
+    score    = paste0(ent - err, '/', ent, ' **', round(per, 0), '**%')
   )
 
   # Bind
@@ -133,7 +133,7 @@ compute.errors <- function(initials, tagpre, tagpost, groups, ignore) {
         ent      = length(i),
         err      = length(intersect(i, i.error)),
         per      = (1 - err / ent) * 100,
-        score    = paste0(ent - err, '/', ent, ' | ', round(per, 0), '%')
+        score    = paste0(ent - err, '/', ent, ' **', round(per, 0), '**%')
       )
 
       # Bind
