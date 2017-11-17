@@ -92,7 +92,7 @@ compute.errors <- function(initials, tagpre, tagpost, groups, ignore) {
     if(ent == 0) {
       score <- '---'
     } else {
-      score <- paste0(ent - err, '/', ent, ' **', round(per, 0), '*')
+      score <- paste0(ent - err, '/', ent, ' **', round(per, 0), '**')
     }
 
     # Write variables
