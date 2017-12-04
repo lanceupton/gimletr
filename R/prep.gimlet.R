@@ -26,7 +26,7 @@ prep.gimlet <- function(data) {
   }
 
   # Vector of names from a Gimlet data query to be pre-processed
-  names <- c('Initials', 'Location', 'Format', 'Asked at', 'Tags', 'Question', 'Answer')
+  names <- c('Question number', 'Initials', 'Location', 'Format', 'Asked at', 'Tags', 'Question', 'Answer')
   # Index data names not in names
   i <- which(!names %in% names(data))
   # If not all names exist,
@@ -39,6 +39,7 @@ prep.gimlet <- function(data) {
 
   # Select data
   output <- data.frame(
+    id       = data$`Question number`,
     initials = gsub(pattern = '[^[:alpha:]]', replacement = '', x = data$Initials),
     location = data$Location,
     format   = data$Format,
@@ -68,6 +69,10 @@ prep.gimlet <- function(data) {
     output[,n] <- x
 
   }
+
+  # Remove complete BLANKs
+  output <- output %>%
+    filter(!(tagpre == 'BLANK' & question == 'BLANK' & answer == 'BLANK'))
 
   # Return output
   output
