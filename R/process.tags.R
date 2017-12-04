@@ -2,7 +2,8 @@
 #'
 #' Verify tags in Gimlet data.
 #'
-#' @param tags,promoted,regex Character vectors.
+#' @param tags,promoted Character vectors.
+#' @param regex Optional. Character vector.
 #'
 #' @return A vector of processed tags.
 #'

@@ -7,7 +7,9 @@
 process.tags(tags, promoted, regex)
 }
 \arguments{
-\item{tags, promoted, regex}{Character vectors.}
+\item{tags, promoted}{Character vectors.}
+
+\item{regex}{Optional. Character vector.}
 }
 \value{
 A vector of processed tags.
