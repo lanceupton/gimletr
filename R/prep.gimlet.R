@@ -44,7 +44,7 @@ prep.gimlet <- function(data) {
     location = data$Location,
     format   = data$Format,
     datetime = data$'Asked at',
-    tagpre   = data$Tags,
+    tag      = data$Tags,
     question = data$Question,
     answer   = data$Answer,
     stringsAsFactors = FALSE
