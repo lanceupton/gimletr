@@ -117,9 +117,10 @@ read.gimlet <- function(site, email, password, start_date, end_date, prep = FALS
 
   # Prep?
   if(prep) {
-    prep.gimlet(data = data)
-  } else {
-    return(data)
+    data <- prep.gimlet(data = data)
   }
+
+  # Return data
+  return(data)
 
 }
