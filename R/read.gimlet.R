@@ -4,8 +4,9 @@
 #'
 #' @param site,email,password Strings.
 #' @param start_date,end_date Optional. Objects of class 'POSIXt' or 'Date'.
+#' @param prep Boolean. Default FALSE.
 #'
-#' @return A data frame containing the content of a Gimlet data query.
+#' @return A data frame containing the content of a Gimlet data query. If \code{prep} = TRUE, the data is pre-processed using \code{prep.gimlet()}.
 #'
 #' @examples
 #' read.gimlet('mysite', 'e@mail.com', 'mypassword')
@@ -13,7 +14,7 @@
 #'
 #' @export read.gimlet
 
-read.gimlet <- function(site, email, password, start_date, end_date) {
+read.gimlet <- function(site, email, password, start_date, end_date, prep = FALSE) {
 
 # Handle Arguments --------------------------------------------------------
 
@@ -111,7 +112,14 @@ read.gimlet <- function(site, email, password, start_date, end_date) {
     session %>% submit_form(data_query)
   )
 
-  # Return the parsed response content
-  suppressMessages(content(x = response$response, as = 'parsed'))
+  # Parsed response content
+  data <- suppressMessages(content(x = response$response, as = 'parsed'))
+
+  # Prep?
+  if(prep) {
+    prep.gimlet(data = data)
+  } else {
+    return(data)
+  }
 
 }

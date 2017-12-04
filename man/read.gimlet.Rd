@@ -4,15 +4,17 @@
 \alias{read.gimlet}
 \title{Download Gimlet data.}
 \usage{
-read.gimlet(site, email, password, start_date, end_date)
+read.gimlet(site, email, password, start_date, end_date, prep = FALSE)
 }
 \arguments{
 \item{site, email, password}{Strings.}
 
 \item{start_date, end_date}{Optional. Objects of class 'POSIXt' or 'Date'.}
+
+\item{prep}{Boolean. Default FALSE.}
 }
 \value{
-A data frame containing the content of a Gimlet data query.
+A data frame containing the content of a Gimlet data query. If \code{prep} = TRUE, the data is pre-processed using \code{prep.gimlet()}.
 }
 \description{
 Download Gimlet data.
