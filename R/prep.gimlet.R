@@ -72,7 +72,7 @@ prep.gimlet <- function(data) {
 
   # Remove complete BLANKs
   output <- output %>%
-    filter(!(tagpre == 'BLANK' & question == 'BLANK' & answer == 'BLANK'))
+    filter(!(tag == 'BLANK' & question == 'BLANK' & answer == 'BLANK'))
 
   # Return output
   output
