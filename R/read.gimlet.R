@@ -2,15 +2,16 @@
 #'
 #' Download Gimlet data.
 #'
-#' @param site,email,password Strings.
-#' @param start_date,end_date Optional. Objects of class 'POSIXt' or 'Date'.
-#' @param prep Boolean. Default FALSE.
+#' @param site A string denoting the Gimlet subdomain 'site', e.g., YOURLIBRARY.gimlet.us.
+#' @param email A string denoting the email to login to your Gimlet site.
+#' @param password A string denoting the password to login to your Gimlet site.
+#' @param start_date,end_date Optional. Objects of class 'POSIXt' or 'Date' denoting the desired start and end dates of the data query. Default to past 7 days.
+#' @param prep Boolean. Default FALSE. Should the data be prepared using \code{prep.gimlet()}?
 #'
-#' @return A data frame containing the content of a Gimlet data query. If \code{prep} = TRUE, the data is pre-processed using \code{prep.gimlet()}.
+#' @return A data frame containing the contents of a Gimlet data query. If \code{prep} = TRUE, the data is pre-processed using \code{prep.gimlet()}.
 #'
 #' @examples
-#' read.gimlet('mysite', 'e@mail.com', 'mypassword')
-#' read.gimlet('mysite', 'e@mail.com', 'mypassword', as.Date('2010-01-01'), as.Date('2010-01-31'))
+#' read.gimlet(site = 'mysite', email = 'e@mail.com', password = 'mypassword')
 #'
 #' @export read.gimlet
 
