@@ -65,15 +65,14 @@ prep.gimlet <- function(data, promoted_tags = NULL) {
     tags <- strsplit(x = output$tags, split = ' ')
 
     # Remove non-promoted tags
-    tags <- lapply(X = tags, FUN = function(t) {
+    output$tags <- unlist(lapply(X = tags, FUN = function(t) {
       t <- t[t %in% promoted_tags]
       if(length(t) == 0) {t <- NA}
       # Deparse tags to re-attach
       paste(t, collapse = ' ')
-    })
+    }))
 
   }
-
 
   # Return data
   return(output)
