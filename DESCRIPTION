@@ -5,16 +5,14 @@ Version: 0.1.0
 Author: Upton, Lance T. <lance.upton@gmail.com>
 Maintainer: Upton, Lance T. <lance.upton@gmail.com>
 Description: Summary of functions:
-    \code{read.gimlet()} - Downloads Gimlet data.
-    \code{prep.gimlet()} - Pre-processes Gimlet data.
-    \code{process.tags()} - Processes and verifies Gimlet tags.
-    \code{compute.errors()} - Computes user summary statistics.
-    Example scripts which use function in this package can be found here:
-    http://github.com/lanceupton/gimletr/examples
+    \code{read.gimlet()} - Download Gimlet data.
+    \code{prep.gimlet()} - Prepare Gimlet data.
+    \code{compute.errors()} - Compute user summary statistics.
+    Example scripts located in the examples folder.
 License: MIT
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1
-Imports: dplyr, rvest, httr
+Depends: RCurl, httr, assertthat
 URL: http://github.com/lanceupton/gimletr
 BugReports: http://github.com/lanceupton/gimletr/issues
