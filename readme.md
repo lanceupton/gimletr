@@ -8,14 +8,12 @@ Example scripts are included in examples/.
 
 ### Summary of Functions
 
-`read.gimlet()` - Downloads Gimlet data.
+`read.gimlet()` - Download Gimlet data.
 
-`prep.gimlet()` - Pre-processes Gimlet data.
-
-`process.tags()` - Processes and verifies Gimlet tags.
+`prep.gimlet()` - Prepare Gimlet data.
 
 `compute.errors()` - Computes user summary statistics.
 
 ### Installation
 
-To install, execute `devtools::install_github(repo = "lanceupton/gimletr")`
+To install, execute `devtools::install_github(repo = 'lanceupton/gimletr')`
