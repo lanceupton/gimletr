@@ -10,7 +10,7 @@ gimlet.errors(data)
 \item{data}{A data frame containing character variables \code{initials}, \code{tagpre}, and \code{tagpost}.}
 }
 \value{
-A data frame containing \code{ent} (number entered), \code{err} (number errors), \code{cor} (number correct), \code{per} (percent correct), and \code{score} (score term), grouped by \code{initials}.
+A data frame containing \code{err} (number errors), \code{cor} (number correct), \code{ent} (number entered), \code{per} (percent correct), and \code{score} (score term), grouped by \code{initials}.
 }
 \description{
 Compute user tagging errors.
