@@ -13,23 +13,34 @@
 #'
 #' @export gimlet.errors
 
-gimlet.errors <- function(initials, tagpre, tagpost) {
+gimlet.errors <- function(data) {
 
 # HANDLE ARGUMENTS --------------------------------------------------------
 
+    # Check argument classes
+  assert_that(is.data.frame(data))
+
+  # Vector of required variables
+  vars_req <- c('initials', 'tagpre', 'tagpost')
+
+  # Determine which variables are not supplied
+  vars_missing <- vars_req[!vars_req %in% names(data)]
+
+  # Require that all variables are supplied
   assert_that(
-    is.character(initials) | is.factor(initials),
-    is.character(tagpre) | is.factor(tagpre),
-    is.character(tagpost) | is.factor(tagpost),
-    length(initials) == length(tagpre),
-    length(initials) == length(tagpost)
+    length(vars_missing) == 0,
+    msg = paste(
+      'Additional variables required:',
+      paste(vars_missing, collapse = ', ')
+    )
   )
+
 
 # FUNCTION ----------------------------------------------------------------
 
   # Detach parsed tags
-  tagpre <- strsplit(x = tagpre, split = ' ')
-  tagpost <- strsplit(x = tagpost, split = ' ')
+  tagpre <- strsplit(x = dat$tagpre, split = ' ')
+  tagpost <- strsplit(x = dat$tagpost, split = ' ')
 
   # Index observations where list of tags do not match
   errors <- mapply(tagpre, tagpost, FUN = function(pre, post) {

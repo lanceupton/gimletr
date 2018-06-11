@@ -4,7 +4,7 @@
 \alias{gimlet.errors}
 \title{Compute user tagging errors.}
 \usage{
-gimlet.errors(initials, tagpre, tagpost)
+gimlet.errors(data)
 }
 \arguments{
 \item{initials}{A character vector or factor denoting groups to compute errors for.}
