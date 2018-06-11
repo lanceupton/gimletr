@@ -12,7 +12,7 @@ gimlet.prep(data, promoted_tags = NULL)
 \item{promoted_tags}{Optional. A character vector of 'promoted' tags, i.e., tags to retain.}
 }
 \value{
-A data frame with prepared data.
+A data frame with prepared data. If \code{promoted_tags} is provided, \code{tags} variable is replaced with \code{tagpre} (original tag) and \code{tagpost} (processed tag).
 }
 \description{
 Prepare Gimlet data.
