@@ -4,22 +4,22 @@
 \alias{compute.errors}
 \title{Compute user tagging errors.}
 \usage{
-compute.errors(initials, tagpre, tagpost, groups, ignore)
+compute.errors(initials, tagpre, tagpost)
 }
 \arguments{
-\item{initials, tagpre, tagpost}{Character vectors.}
+\item{initials}{A character vector or factor denoting groups to compute errors for.}
 
-\item{groups}{Optional. A character vector.}
+\item{tagpre}{A character vector or factor denoting the submitted tags.}
 
-\item{ignore}{Optional. An integer vector.}
+\item{tagpost}{A character vector or factor denoting the corrected tags.}
 }
 \value{
-A data frame containing \code{ent}, \code{err}, \code{per}, and \code{score} by each level in \code{initials}. If \code{groups} is specified, group errors are also computed. If \code{ignore} is specified, those indices are ignored when calculating \code{err}.
+A data frame containing \code{ent}, \code{err}, \code{per}, and \code{score}, grouped by \code{initials}.
 }
 \description{
 Compute user tagging errors.
 }
 \examples{
-compute.errors(initials = data$initials, tagpre = data$tagpre, tagpost = data$tagpost, groups = data$group)
+compute.errors(data$initials, tagpre = data$tagpre, tagpost = data$tagpost)
 
 }
