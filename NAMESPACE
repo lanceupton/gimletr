@@ -2,5 +2,4 @@
 
 export(compute.errors)
 export(prep.gimlet)
-export(process.tags)
 export(read.gimlet)
