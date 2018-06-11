@@ -1,24 +1,27 @@
-#' Pre-process Gimlet data.
+#' Prepare Gimlet data.
 #'
-#' Pre-process Gimlet data.
+#' Prepare Gimlet data.
 #'
 #' @param data A data frame with raw Gimlet data.
+#' @param promoted_tags Optional. A character vector of 'promoted' tags, i.e., tags to retain.
 #'
-#' @return A data frame with pre-processed data.
+#' @return A data frame with prepared data.
 #'
 #' @examples
-#' prep.gimlet(data = read.gimlet('mysite', 'e@mail.com', 'mypassword'))
+#' prep.gimlet(read.gimlet('mysite', 'e@mail.com', 'mypassword'))
+#' prep.gimlet(mydata, c('policy', 'technology', 'ill', 'internal_directions'))
 #'
 #' @export prep.gimlet
 
-prep.gimlet <- function(data) {
+prep.gimlet <- function(data, promoted_tags = NULL) {
 
-# HANDLE ARGUMENTS --------------------------------------------------------
+  # HANDLE ARGUMENTS --------------------------------------------------------
 
   # Check argument classes
-  assert_that(
-    is.data.frame(data)
-  )
+  assert_that(is.data.frame(data))
+  if(!is.null(promoted_tags)) {
+    assert_that(is.character(promoted_tags))
+  }
 
   # Vector of required variables
   vars_req <- c(
@@ -38,10 +41,10 @@ prep.gimlet <- function(data) {
     )
   )
 
-# FUNCTION ----------------------------------------------------------------
+  # FUNCTION ----------------------------------------------------------------
 
   # Subset and format data
-  data.frame(
+  output <- data.frame(
     datetime     = as.POSIXct(data$Asked.at),
     initials     = factor(tolower(gsub(
       pattern = '[^[:alpha:]]', replacement = '', x = data$Initials
@@ -50,10 +53,22 @@ prep.gimlet <- function(data) {
     format       = factor(tolower(data$Format)),
     patron_group = factor(tolower(data$Asked.by)),
     category     = factor(tolower(data$Question.type)),
-    tags         = tolower(data$Tags),
+    tags         = I(strsplit(x = tolower(data$Tags), split = ' ')),
     question     = tolower(data$Question),
     answer       = tolower(data$Answer),
     stringsAsFactors = FALSE
   )
+
+  if(!is.null(promoted_tags)) {
+    # Remove non-promoted tags
+    output$tags <- lapply(X = output$tags, FUN = function(t) {
+      t <- t[t %in% promoted_tags]
+      if(length(t) == 0) {t <- NA}
+      t
+    })
+  }
+
+  # Return data
+  return(output)
 
 }
