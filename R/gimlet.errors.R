@@ -2,14 +2,12 @@
 #'
 #' Compute user tagging errors.
 #'
-#' @param initials A character vector or factor denoting groups to compute errors for.
-#' @param tagpre A character vector or factor denoting the submitted tags.
-#' @param tagpost A character vector or factor denoting the corrected tags.
+#' @param data A data frame containing character variables \code{initials}, \code{tagpre}, and \code{tagpost}.
 #'
-#' @return A data frame containing \code{ent}, \code{err}, \code{per}, and \code{score}, grouped by \code{initials}.
+#' @return A data frame containing \code{ent} (number entered), \code{err} (number errors), \code{cor} (number correct), \code{per} (percent correct), and \code{score} (score term), grouped by \code{initials}.
 #'
 #' @examples
-#' compute.errors(data$initials, tagpre = data$tagpre, tagpost = data$tagpost)
+#' compute.errors(data)
 #'
 #' @export gimlet.errors
 
@@ -48,7 +46,7 @@ gimlet.errors <- function(data) {
   })
 
   # Tabulate results
-  errors <- data.frame(table(initials, errors))
+  errors <- data.frame(table(dat$initials, errors))
   errors <- reshape(
     data = errors,
     idvar = 'initials',

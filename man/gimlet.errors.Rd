@@ -7,19 +7,15 @@
 gimlet.errors(data)
 }
 \arguments{
-\item{initials}{A character vector or factor denoting groups to compute errors for.}
-
-\item{tagpre}{A character vector or factor denoting the submitted tags.}
-
-\item{tagpost}{A character vector or factor denoting the corrected tags.}
+\item{data}{A data frame containing character variables \code{initials}, \code{tagpre}, and \code{tagpost}.}
 }
 \value{
-A data frame containing \code{ent}, \code{err}, \code{per}, and \code{score}, grouped by \code{initials}.
+A data frame containing \code{ent} (number entered), \code{err} (number errors), \code{cor} (number correct), \code{per} (percent correct), and \code{score} (score term), grouped by \code{initials}.
 }
 \description{
 Compute user tagging errors.
 }
 \examples{
-compute.errors(data$initials, tagpre = data$tagpre, tagpost = data$tagpost)
+compute.errors(data)
 
 }
