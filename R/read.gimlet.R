@@ -5,39 +5,36 @@
 #' @param site A string denoting the Gimlet subdomain 'site', e.g., YOURLIBRARY.gimlet.us.
 #' @param email A string denoting the email to login to your Gimlet site.
 #' @param password A string denoting the password to login to your Gimlet site.
-#' @param start_date,end_date Optional. Objects of class 'POSIXt' or 'Date' denoting the desired start and end dates of the data query. Default to past 7 days.
-#' @param prep Boolean. Default FALSE. Should the data be prepared using \code{prep.gimlet()}?
+#' @param start_date,end_date Optional. Object of class 'POSIXt' or 'Date' denoting the desired start and end date of the data query. Defaults to past 7 days.
+#' @param prep Boolean. Default TRUE. Should the data be prepared using \code{prep.gimlet()}?
 #'
 #' @return A data frame containing the contents of a Gimlet data query. If \code{prep} = TRUE, the data is pre-processed using \code{prep.gimlet()}.
 #'
 #' @examples
-#' read.gimlet(site = 'mysite', email = 'e@mail.com', password = 'mypassword')
+#' read.gimlet('mysite', 'e@mail.com', 'mypassword')
 #'
 #' @export read.gimlet
 
-read.gimlet <- function(site, email, password, start_date, end_date, prep = FALSE) {
+read.gimlet <- function(site, email, password, start_date, end_date, prep = TRUE) {
 
-# Handle Arguments --------------------------------------------------------
+  # HANDLE ARGUMENTS --------------------------------------------------------
 
-  # Return for missing arguments
-  if(missing(site)) {
-    stop('Please specify a Gimlet site.')
-  }
-  if(missing(email)) {
-    stop('Please specify a login email.')
-  }
-  if(missing(password)) {
-    stop('Please specify a login password.')
-  }
+  # Check argument classes
+  assert_that(
+    is.string(site),
+    is.string(email),
+    is.string(password),
+    is.logical(prep)
+  )
 
   # Handle start_date and end_date
-  dates <- missing(start_date) + missing(end_date)
+  missing_dates <- missing(start_date) + missing(end_date)
   # One is missing
-  if(dates == 1) {
+  if(missing_dates == 1) {
     stop('Please specify both start_date and end_date, or neither.')
   }
   # Both are missing
-  if(dates == 2) {
+  if(missing_dates == 2) {
     # Set default values
     start_date <- Sys.Date() - 7
     end_date <- Sys.Date()
@@ -48,80 +45,61 @@ read.gimlet <- function(site, email, password, start_date, end_date, prep = FALS
     )
   }
   # Neither are missing
-  if(dates == 0) {
+  if(missing_dates == 0) {
     # Format variables
-    start_date <- format(as.Date(start_date))
-    end_date <- format(as.Date(end_date))
+    start_date <- as.Date(start_date)
+    end_date <- as.Date(end_date)
     # If unordered
     if(start_date > end_date) {
-      stop('start_date must occur before end_date.')
+      stop('start_date occurs after end_date.')
     }
   }
 
-  # Check argument classes
-  if(!is.character(site) | length(site) != 1) {
-    stop('site must be character class of length 1.')
-  }
-  if(grepl(pattern = '[^[:alnum:]|-]', x = site, ignore.case = TRUE)) {
-    stop('site must have a valid name.\nAcceptable characters are: a-z, A-Z, 0-9, and -.')
-  }
-  if(!is.character(email) | length(email) != 1) {
-    stop('email must be character class of length 1.')
-  }
-  if(!is.character(password) | length(password) != 1) {
-    stop('password must be character class of length 1.')
-  }
+  # FUNCTION ----------------------------------------------------------------
 
-# Function ----------------------------------------------------------------
-
-  ## LOGIN
+  # Generate base site URL
+  base_url <- paste0('https://', site, '.gimlet.us')
 
   # Generate a Gimlet login URL
-  url <- paste0('https://', site, '.gimlet.us/users/login')
-  # Start a session
-  session <- html_session(url = url)
-  # Get form and fill in values
-  login <- session %>%
-    html_node('form') %>%
-    html_form() %>%
-    set_values(
-      email = email,
-      password = password
+  login_url <- parse_url(base_url)
+  login_url$path <- 'users/login'
+
+  # Generate a Gimlet report URL
+  report_url <- parse_url(base_url)
+  report_url$path <- 'reports/data_dump'
+  report_url$query <- list(
+    `report[start_date]` = start_date,
+    `report[end_date]` = end_date
+  )
+
+  # Initialize a curl handle with cookies
+  curl <- getCurlHandle(cookiefile = '')
+
+  # POST login form
+  login <- suppressWarnings(
+    postForm(
+      uri = build_url(login_url),
+      .params = list(
+        email = email,
+        password = password
+      ),
+      curl = curl
     )
-  # Submit login form
-  login <- suppressMessages(
-    session %>%
-      submit_form(form = login)
   )
 
-  ## GET DATA
-  data_query <- suppressMessages(
-    login %>%
-      # Navigate to download page
-      follow_link('Reports') %>%
-      follow_link('Download') %>%
-      # Get form and fill in values
-      html_node('form') %>%
-      html_form() %>%
-      set_values(
-        'report[start_date]' = start_date,
-        'report[end_date]' = end_date
-      )
-  )
-  # Submit data query form
-  response <- suppressMessages(
-    session %>% submit_form(data_query)
-  )
+  # GET report data and parse it
+  response <- getURL(build_url(report_url), curl = curl)
+  response <- read.csv(textConnection(response), header = TRUE, stringsAsFactors = FALSE, strip.white = TRUE)
 
-  # Parsed response content
-  data <- suppressMessages(content(x = response$response, as = 'parsed'))
+  # Success message
+  message('gimletr: Succesfully fetched ', nrow(response), ' observations.')
 
   # Prep?
   if(prep) {
-    data <- prep.gimlet(data = data)
+    response <- prep.gimlet(data = response)
   }
 
   # Return data
-  return(data)
+  return(response)
 
 }
