@@ -6,16 +6,15 @@
 #' @param email A string denoting the email to login to your Gimlet site.
 #' @param password A string denoting the password to login to your Gimlet site.
 #' @param start_date,end_date Optional. Object of class 'POSIXt' or 'Date' denoting the desired start and end date of the data query. Defaults to past 7 days.
-#' @param prep Boolean. Default TRUE. Should the data be prepared using \code{prep.gimlet()}?
 #'
-#' @return A data frame containing the contents of a Gimlet data query. If \code{prep} = TRUE, the data is pre-processed using \code{prep.gimlet()}.
+#' @return A data frame containing the contents of a Gimlet data query.
 #'
 #' @examples
 #' read.gimlet('mysite', 'e@mail.com', 'mypassword')
 #'
 #' @export read.gimlet
 
-read.gimlet <- function(site, email, password, start_date, end_date, prep = TRUE) {
+read.gimlet <- function(site, email, password, start_date, end_date) {
 
   # HANDLE ARGUMENTS --------------------------------------------------------
 
@@ -23,8 +22,7 @@ read.gimlet <- function(site, email, password, start_date, end_date, prep = TRUE
   assert_that(
     is.string(site),
     is.string(email),
-    is.string(password),
-    is.logical(prep)
+    is.string(password)
   )
 
   # Handle start_date and end_date
@@ -39,10 +37,7 @@ read.gimlet <- function(site, email, password, start_date, end_date, prep = TRUE
     start_date <- Sys.Date() - 7
     end_date <- Sys.Date()
     # Message user
-    message(
-      'start_date and end_date missing. Defaulting to last 7 days.\n',
-      start_date, ' - ', end_date
-    )
+    message('gimletr: start_date and end_date missing. Defaulting to last 7 days.')
   }
   # Neither are missing
   if(missing_dates == 0) {
@@ -93,11 +88,6 @@ read.gimlet <- function(site, email, password, start_date, end_date, prep = TRUE
 
   # Success message
   message('gimletr: Succesfully fetched ', nrow(response), ' observations.')
-
-  # Prep?
-  if(prep) {
-    response <- prep.gimlet(data = response)
-  }
 
   # Return data
   return(response)
