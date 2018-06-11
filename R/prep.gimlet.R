@@ -53,20 +53,27 @@ prep.gimlet <- function(data, promoted_tags = NULL) {
     format       = factor(tolower(data$Format)),
     patron_group = factor(tolower(data$Asked.by)),
     category     = factor(tolower(data$Question.type)),
-    tags         = I(strsplit(x = tolower(data$Tags), split = ' ')),
+    tags         = tolower(data$Tags),
     question     = tolower(data$Question),
     answer       = tolower(data$Answer),
     stringsAsFactors = FALSE
   )
 
   if(!is.null(promoted_tags)) {
+
+    # Detach parsed tags
+    tags <- strsplit(x = output$tags, split = ' ')
+
     # Remove non-promoted tags
-    output$tags <- lapply(X = output$tags, FUN = function(t) {
+    tags <- lapply(X = tags, FUN = function(t) {
       t <- t[t %in% promoted_tags]
       if(length(t) == 0) {t <- NA}
-      t
+      # Deparse tags to re-attach
+      paste(t, collapse = ' ')
     })
+
   }
+
 
   # Return data
   return(output)
