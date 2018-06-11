@@ -7,74 +7,53 @@
 #' @return A data frame with pre-processed data.
 #'
 #' @examples
-#' prep.gimlet(data = read.gimlet('site', 'e@mail.com', 'pass'))
+#' prep.gimlet(data = read.gimlet('mysite', 'e@mail.com', 'mypassword'))
 #'
 #' @export prep.gimlet
 
 prep.gimlet <- function(data) {
 
-# Handle Arguments --------------------------------------------------------
-
-  # Return error for missing arguments
-  if(missing(data)) {
-    stop('Please specify data.')
-  }
+# HANDLE ARGUMENTS --------------------------------------------------------
 
   # Check argument classes
-  if(!is.data.frame(data)) {
-    stop('data must be a data frame.')
-  }
-
-  # Vector of names from a Gimlet data query to be pre-processed
-  names <- c('Question number', 'Initials', 'Location', 'Format', 'Asked at', 'Tags', 'Question', 'Answer')
-  # Index data names not in names
-  i <- which(!names %in% names(data))
-  # If not all names exist,
-  if(length(i)) {
-    stop(paste('Important variables missing from data!', paste(names[i], collapse = '\n'), sep = '\n'))
-  }
-
-
-# Function ----------------------------------------------------------------
-
-  # Select data
-  output <- data.frame(
-    id       = data$`Question number`,
-    initials = gsub(pattern = '[^[:alpha:]]', replacement = '', x = data$Initials),
-    location = data$Location,
-    format   = data$Format,
-    datetime = data$'Asked at',
-    tag      = data$Tags,
-    question = data$Question,
-    answer   = data$Answer,
-    stringsAsFactors = FALSE
+  assert_that(
+    is.data.frame(data)
   )
 
-  # For each variable in data,
-  for(n in 1:length(output)) {
+  # Vector of required variables
+  vars_req <- c(
+    'Initials', 'Location', 'Format', 'Asked.by', 'Question.type',
+    'Asked.at', 'Tags', 'Question', 'Answer'
+  )
 
-    # Attach
-    x <- output[,n]
-    # Remove trailing/leading whitespace
-    x <- gsub(pattern = '^ +', replacement = '', x = x)
-    # Remove duplicate whitespace
-    x <- gsub(pattern = ' +', replacement = ' ', x = x)
-    # Lower case
-    x <- tolower(x = x)
-    # Index blank or NA obs
-    i <- union(which(x == ''), which(is.na(x)))
-    # Label them with BLANK
-    if(length(i)) {x[i] <- 'BLANK'}
-    # Detach
-    output[,n] <- x
+  # Determine which variables are not supplied
+  vars_missing <- vars_req[!vars_req %in% names(data)]
 
-  }
+  # Require that all variables are supplied
+  assert_that(
+    length(vars_missing) == 0,
+    msg = paste(
+      'Additional variables required:',
+      paste(vars_missing, collapse = ', ')
+    )
+  )
 
-  # Remove complete BLANKs
-  output <- output %>%
-    filter(!(tag == 'BLANK' & question == 'BLANK' & answer == 'BLANK'))
+# FUNCTION ----------------------------------------------------------------
 
-  # Return output
-  output
+  # Subset and format data
+  data.frame(
+    datetime     = as.POSIXct(data$Asked.at),
+    initials     = factor(tolower(gsub(
+      pattern = '[^[:alpha:]]', replacement = '', x = data$Initials
+    ))),
+    location     = factor(tolower(data$Location)),
+    format       = factor(tolower(data$Format)),
+    patron_group = factor(tolower(data$Asked.by)),
+    category     = factor(tolower(data$Question.type)),
+    tags         = tolower(data$Tags),
+    question     = tolower(data$Question),
+    answer       = tolower(data$Answer),
+    stringsAsFactors = FALSE
+  )
 
 }
