@@ -61,11 +61,14 @@ gimlet.prep <- function(data, promoted_tags = NULL) {
 
   if(!is.null(promoted_tags)) {
 
+    # Rename tags variable
+    names(output)[which(names(output) == 'tags')] <- 'tagpre'
+
     # Detach parsed tags
-    tags <- strsplit(x = output$tags, split = ' ')
+    tags <- strsplit(x = output$tagpre, split = ' ')
 
     # Remove non-promoted tags
-    output$tags <- unlist(lapply(X = tags, FUN = function(t) {
+    output$tagpost <- unlist(lapply(X = tags, FUN = function(t) {
       t <- t[t %in% promoted_tags]
       if(length(t) == 0) {t <- NA}
       # Deparse tags to re-attach
