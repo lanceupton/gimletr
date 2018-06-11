@@ -2,20 +2,23 @@
 % Please edit documentation in R/prep.gimlet.R
 \name{prep.gimlet}
 \alias{prep.gimlet}
-\title{Pre-process Gimlet data.}
+\title{Prepare Gimlet data.}
 \usage{
-prep.gimlet(data)
+prep.gimlet(data, promoted_tags = NULL)
 }
 \arguments{
 \item{data}{A data frame with raw Gimlet data.}
+
+\item{promoted_tags}{Optional. A character vector of 'promoted' tags, i.e., tags to retain.}
 }
 \value{
-A data frame with pre-processed data.
+A data frame with prepared data.
 }
 \description{
-Pre-process Gimlet data.
+Prepare Gimlet data.
 }
 \examples{
-prep.gimlet(data = read.gimlet('site', 'e@mail.com', 'pass'))
+prep.gimlet(read.gimlet('mysite', 'e@mail.com', 'mypassword'))
+prep.gimlet(mydata, c('policy', 'technology', 'ill', 'internal_directions'))
 
 }

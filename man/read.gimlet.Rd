@@ -4,23 +4,24 @@
 \alias{read.gimlet}
 \title{Download Gimlet data.}
 \usage{
-read.gimlet(site, email, password, start_date, end_date, prep = FALSE)
+read.gimlet(site, email, password, start_date, end_date)
 }
 \arguments{
-\item{site, email, password}{Strings.}
+\item{site}{A string denoting the Gimlet subdomain 'site', e.g., YOURLIBRARY.gimlet.us.}
 
-\item{start_date, end_date}{Optional. Objects of class 'POSIXt' or 'Date'.}
+\item{email}{A string denoting the email to login to your Gimlet site.}
 
-\item{prep}{Boolean. Default FALSE.}
+\item{password}{A string denoting the password to login to your Gimlet site.}
+
+\item{start_date, end_date}{Optional. Object of class 'POSIXt' or 'Date' denoting the desired start and end date of the data query. Defaults to past 7 days.}
 }
 \value{
-A data frame containing the content of a Gimlet data query. If \code{prep} = TRUE, the data is pre-processed using \code{prep.gimlet()}.
+A data frame containing the contents of a Gimlet data query.
 }
 \description{
 Download Gimlet data.
 }
 \examples{
 read.gimlet('mysite', 'e@mail.com', 'mypassword')
-read.gimlet('mysite', 'e@mail.com', 'mypassword', as.Date('2010-01-01'), as.Date('2010-01-31'))
 
 }
