@@ -11,9 +11,9 @@
 #' @examples
 #' compute.errors(data$initials, tagpre = data$tagpre, tagpost = data$tagpost)
 #'
-#' @export compute.errors
+#' @export gimlet.errors
 
-compute.errors <- function(initials, tagpre, tagpost) {
+gimlet.errors <- function(initials, tagpre, tagpost) {
 
 # HANDLE ARGUMENTS --------------------------------------------------------
 

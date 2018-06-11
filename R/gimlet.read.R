@@ -12,9 +12,9 @@
 #' @examples
 #' read.gimlet('mysite', 'e@mail.com', 'mypassword')
 #'
-#' @export read.gimlet
+#' @export gimlet.read
 
-read.gimlet <- function(site, email, password, start_date, end_date) {
+gimlet.read <- function(site, email, password, start_date, end_date) {
 
   # HANDLE ARGUMENTS --------------------------------------------------------
 

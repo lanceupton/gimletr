@@ -11,9 +11,9 @@
 #' prep.gimlet(read.gimlet('mysite', 'e@mail.com', 'mypassword'))
 #' prep.gimlet(mydata, c('policy', 'technology', 'ill', 'internal_directions'))
 #'
-#' @export prep.gimlet
+#' @export gimlet.prep
 
-prep.gimlet <- function(data, promoted_tags = NULL) {
+gimlet.prep <- function(data, promoted_tags = NULL) {
 
   # HANDLE ARGUMENTS --------------------------------------------------------
 

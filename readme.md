@@ -8,11 +8,13 @@ Example scripts are included in examples/.
 
 ### Summary of Functions
 
-`read.gimlet()` - Download Gimlet data.
+`gimlet.read()` - Download Gimlet data.
 
-`prep.gimlet()` - Prepare Gimlet data.
+`gimlet.prep()` - Prepare Gimlet data.
 
-`compute.errors()` - Computes user summary statistics.
+`gimlet.errors()` - Computes user summary statistics.
+
+`gimlet.wc()` - Generate word clouds.
 
 ### Installation
 
