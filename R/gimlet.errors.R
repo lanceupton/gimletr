@@ -20,7 +20,7 @@ gimlet.errors <- function(initials, tagpre, tagpost) {
   assert_that(
     is.character(initials) | is.factor(initials),
     is.character(tagpre) | is.factor(tagpre),
-    is.character(post) | is.factor(tagpost),
+    is.character(tagpost) | is.factor(tagpost),
     length(initials) == length(tagpre),
     length(initials) == length(tagpost)
   )
