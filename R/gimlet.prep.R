@@ -75,6 +75,13 @@ gimlet.prep <- function(data, promoted_tags = NULL) {
       paste(t, collapse = ' ')
     }))
 
+    # Detach 'other' tags
+    other <- unique(unlist(lapply(X = tags, FUN = function(t) {
+      t <- t[!t %in% promoted_tags]
+    })))
+    # Other tags message
+    message('gimletr: other tags found.\n', paste(other, collapse = ' '))
+
   }
 
   # Return data
