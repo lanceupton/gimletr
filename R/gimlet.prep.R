@@ -69,7 +69,7 @@ gimlet.prep <- function(data, promoted_tags = NULL) {
 
     # Remove non-promoted tags
     output$tagpost <- unlist(lapply(X = tags, FUN = function(t) {
-      t <- t[t %in% promoted_tags]
+      t <- unique(t[t %in% promoted_tags])
       if(length(t) == 0) {t <- NA}
       # Deparse tags to re-attach
       paste(t, collapse = ' ')
