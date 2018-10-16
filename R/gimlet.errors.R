@@ -37,8 +37,8 @@ gimlet.errors <- function(data) {
 # FUNCTION ----------------------------------------------------------------
 
   # Detach parsed tags
-  tagpre <- strsplit(x = dat$tagpre, split = ' ')
-  tagpost <- strsplit(x = dat$tagpost, split = ' ')
+  tagpre <- strsplit(x = data$tagpre, split = ' ')
+  tagpost <- strsplit(x = data$tagpost, split = ' ')
 
   # Index observations where list of tags do not match
   errors <- mapply(tagpre, tagpost, FUN = function(pre, post) {
@@ -46,7 +46,7 @@ gimlet.errors <- function(data) {
   })
 
   # Tabulate results
-  errors <- data.frame(table(dat$initials, errors))
+  errors <- data.frame(table(data$initials, errors))
   errors <- reshape(
     data = errors,
     idvar = 'Var1',
