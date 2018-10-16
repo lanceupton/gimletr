@@ -87,7 +87,7 @@ gimlet.read <- function(site, email, password, start_date, end_date) {
   response <- read.csv(textConnection(response), header = TRUE, stringsAsFactors = FALSE, strip.white = TRUE)
 
   # Success message
-  message('gimletr: Succesfully fetched ', nrow(response), ' observations.')
+  message('gimletr: Succesfully fetched ', nrow(response), ' observations (', site, ').')
 
   # Return data
   return(response)
