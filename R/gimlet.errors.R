@@ -13,9 +13,9 @@
 
 gimlet.errors <- function(data) {
 
-# HANDLE ARGUMENTS --------------------------------------------------------
+  # HANDLE ARGUMENTS --------------------------------------------------------
 
-    # Check argument classes
+  # Check argument classes
   assert_that(is.data.frame(data))
 
   # Vector of required variables
@@ -34,11 +34,11 @@ gimlet.errors <- function(data) {
   )
 
 
-# FUNCTION ----------------------------------------------------------------
+  # FUNCTION ----------------------------------------------------------------
 
   # Detach parsed tags
-  tagpre <- strsplit(x = data$tagpre, split = ' ')
-  tagpost <- strsplit(x = data$tagpost, split = ' ')
+  tagpre <- strsplit(x = as.character(data$tagpre), split = ' ')
+  tagpost <- strsplit(x = as.character(data$tagpost), split = ' ')
 
   # Index observations where list of tags do not match
   errors <- mapply(tagpre, tagpost, FUN = function(pre, post) {
