@@ -64,7 +64,7 @@ gimlet.prep <- function(data, promoted_tags = NULL) {
     # Rename tags variable
     names(output)[which(names(output) == 'tags')] <- 'tagpre'
 
-    # Detach parsed tags
+    # Detach and parse tags
     tags <- strsplit(x = output$tagpre, split = ' ')
 
     # Remove non-promoted tags
