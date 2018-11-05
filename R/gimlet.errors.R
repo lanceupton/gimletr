@@ -53,7 +53,7 @@ gimlet.errors <- function(data) {
     timevar = 'errors',
     direction = 'wide'
   )
-  names(errors) <- c('initials', 'err', 'cor')
+  names(errors) <- c('initials', 'cor', 'err')
 
   # Add some variables
   errors$ent <- errors$err + errors$cor
