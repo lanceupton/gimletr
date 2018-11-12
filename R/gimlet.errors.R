@@ -56,6 +56,7 @@ gimlet.errors <- function(data, group_by = 'initials') {
   names(errors) <- c(group_by, 'cor', 'err')
 
   # Add total
+  errors[group_by] <- as.character(errors[group_by])
   errors <- rbind(errors, c('Total', sum(errors$cor), sum(errors$err)))
 
   # Add some variables
