@@ -31,12 +31,8 @@ gimlet.errors <- function(data, group_by = 'initials') {
   # Require that all variables are supplied
   assert_that(
     length(vars_missing) == 0,
-    msg = paste(
-      'Additional variables required:',
-      paste(vars_missing, collapse = ', ')
-    )
+    msg = paste('Additional variables required:', vars_missing, collapse = '\n')
   )
-
 
   # FUNCTION ----------------------------------------------------------------
 
