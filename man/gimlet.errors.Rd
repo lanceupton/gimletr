@@ -4,13 +4,15 @@
 \alias{gimlet.errors}
 \title{Compute user tagging errors.}
 \usage{
-gimlet.errors(data)
+gimlet.errors(data, group_by = "initials")
 }
 \arguments{
-\item{data}{A data frame containing character variables \code{initials}, \code{tagpre}, and \code{tagpost}.}
+\item{data}{A data frame containing character variables \code{`group_by`}, \code{tagpre}, and \code{tagpost}.}
+
+\item{group_by}{Default 'initials'. A string denoting the grouping variable.}
 }
 \value{
-A data frame containing \code{err} (number errors), \code{cor} (number correct), \code{ent} (number entered), \code{per} (percent correct), and \code{score} (score term), grouped by \code{initials}.
+A data frame containing \code{err} (number errors), \code{cor} (number correct), \code{ent} (number entered), \code{per} (percent correct), and \code{score} (score term), grouped by \code{group_by}.
 }
 \description{
 Compute user tagging errors.

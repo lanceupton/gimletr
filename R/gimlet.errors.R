@@ -2,24 +2,28 @@
 #'
 #' Compute user tagging errors.
 #'
-#' @param data A data frame containing character variables \code{initials}, \code{tagpre}, and \code{tagpost}.
+#' @param data A data frame containing character variables \code{`group_by`}, \code{tagpre}, and \code{tagpost}.
+#' @param group_by Default 'initials'. A string denoting the grouping variable.
 #'
-#' @return A data frame containing \code{err} (number errors), \code{cor} (number correct), \code{ent} (number entered), \code{per} (percent correct), and \code{score} (score term), grouped by \code{initials}.
+#' @return A data frame containing \code{err} (number errors), \code{cor} (number correct), \code{ent} (number entered), \code{per} (percent correct), and \code{score} (score term), grouped by \code{group_by}.
 #'
 #' @examples
 #' compute.errors(data)
 #'
 #' @export gimlet.errors
 
-gimlet.errors <- function(data) {
+gimlet.errors <- function(data, group_by = 'initials') {
 
   # HANDLE ARGUMENTS --------------------------------------------------------
 
   # Check argument classes
-  assert_that(is.data.frame(data))
+  assert_that(
+    is.data.frame(data),
+    is.string(group_by)
+  )
 
   # Vector of required variables
-  vars_req <- c('initials', 'tagpre', 'tagpost')
+  vars_req <- c(group_by, 'tagpre', 'tagpost')
 
   # Determine which variables are not supplied
   vars_missing <- vars_req[!vars_req %in% names(data)]
@@ -46,14 +50,14 @@ gimlet.errors <- function(data) {
   })
 
   # Tabulate results
-  errors <- data.frame(table(data$initials, errors))
+  errors <- data.frame(table(data[[group_by]], errors))
   errors <- reshape(
     data = errors,
     idvar = 'Var1',
     timevar = 'errors',
     direction = 'wide'
   )
-  names(errors) <- c('initials', 'cor', 'err')
+  names(errors) <- c(group_by, 'cor', 'err')
 
   # Add some variables
   errors$ent <- errors$err + errors$cor
