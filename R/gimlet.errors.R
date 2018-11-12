@@ -59,6 +59,9 @@ gimlet.errors <- function(data, group_by = 'initials') {
   )
   names(errors) <- c(group_by, 'cor', 'err')
 
+  # Add total
+  errors <- rbind(errors, c('Total', sum(errors$cor), sum(errors$err)))
+
   # Add some variables
   errors$ent <- errors$err + errors$cor
   errors$per <- errors$cor / errors$ent * 100
