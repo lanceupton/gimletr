@@ -48,15 +48,20 @@ gimlet.errors <- function(data, group_by = 'initials') {
   # Tabulate results
   errors <- data.frame(table(data[[group_by]], errors))
   errors <- reshape(
-    data = errors,
-    idvar = 'Var1',
-    timevar = 'errors',
+    data      = errors,
+    idvar     = 'Var1',
+    timevar   = 'errors',
     direction = 'wide'
   )
-  names(errors) <- c(group_by, 'cor', 'err')
+  # Handle results
+  errors <- data.frame(
+    group = as.character(errors$Var1),
+    cor   = if('Freq.FALSE' %in% names(errors)) {errors$Freq.FALSE} else {0},
+    err   = if('Freq.TRUE' %in% names(errors)) {errors$Freq.TRUE} else {0},
+    stringsAsFactors = FALSE
+  )
 
   # Add total
-  errors[[group_by]] <- as.character(errors[[group_by]])
   errors <- rbind(errors, list('total', sum(errors$cor), sum(errors$err)))
 
   # Add some variables
